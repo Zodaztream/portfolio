@@ -11,9 +11,9 @@ A user can also visit other people's **customized** portfolio.
 A user shall be able to customize their profile by means of resizing elements/
 and or by selecting different possible **layouts** (see figure 1)
 
-<p align="center">
-    <img src="https://i.imgur.com/YwQPQHP.png"  width="50%" height="50%">
-</p>
+<div align="center">
+<img src="https://i.imgur.com/YwQPQHP.png"  width="50%" height="50%">
+</div>
 
 ### Functional specification
 
