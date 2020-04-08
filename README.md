@@ -32,12 +32,12 @@ A user shall be able to display stock-charts from *Yahoo Finance API* (or others
 
 
 
-### Technological specification
+## Technological specification
 
-#### Client
+### Client
 React with Redux implemented
 
-#### Server
+### Server
 *Gevent* server with *Flask-SQL-lite backend* in *Python*.
 
 *Postman* will be used to test various http calls to the server
@@ -52,17 +52,17 @@ Profile customizations will be stored as *JSON-files* in the *database*
 
 *Typescript* to keep the code clean.
 
-### More images
+## More images
 
 <div align="center">
-<img src="https://imgur.com/2SYDPBn"  width="50%" height="50%">
+<img src="https://imgur.com/2SYDPBn.png"  width="50%" height="50%">
 </div>
 
 <div align="center">
-<img src="https://imgur.com/061vt0S"  width="50%" height="50%">
+<img src="https://imgur.com/061vt0S.png"  width="50%" height="50%">
 </div>
 
 <div align="center">
-<img src="https://imgur.com/IA9lIJH"  width="50%" height="50%">
+<img src="https://imgur.com/IA9lIJH.png"  width="50%" height="50%">
 </div>
 
