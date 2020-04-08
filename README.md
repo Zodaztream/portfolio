@@ -20,7 +20,7 @@ All charts and customizations will be saved in a database using *Flask-Sql-lite 
 <img src="https://i.imgur.com/Y3TrLp9.png"  width="50%" height="50%">
 </div>
 
-### Functional specification
+## Functional specification
 
 A user shall be able to create a simple account and login
 
