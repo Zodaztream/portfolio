@@ -14,7 +14,7 @@ the background image of their profile.
 
 *below should be moved to Functional/Technological*
 A user shall be able to pick their stock charts from the *Yahoo Finance API*
-All charts and customizations will be saved in a database using *Flask-Sql-lite a backend*.
+All charts and customizations will be saved in a database using *Flask-Sql-lite a backend* as JSON.
 
 <div align="center">
 <img src="https://i.imgur.com/Y3TrLp9.png"  width="50%" height="50%">
@@ -22,4 +22,47 @@ All charts and customizations will be saved in a database using *Flask-Sql-lite 
 
 ### Functional specification
 
+A user shall be able to create a simple account and login
+
+A user shall be able to customize their profile by resizing chart elements, reshaping, and changing background.
+
+A user shall be able to visit others' profile by searching and see their stock-charts with their customization
+
+A user shall be able to display stock-charts from *Yahoo Finance API* (or others, if such exist)
+
+
+
 ### Technological specification
+
+#### Client
+React with Redux implemented
+
+#### Server
+*Gevent* server with *Flask-SQL-lite backend* in *Python*.
+
+*Postman* will be used to test various http calls to the server
+
+Profile customizations will be stored as *JSON-files* in the *database*
+
+*D3* Will be used to display stock-charts
+
+*Yahoo Finance API* will be used to gather data to create said stock-charts
+
+*React Mosaic* will be used to allow profile customization
+
+*Typescript* to keep the code clean.
+
+### More images
+
+<div align="center">
+<img src="https://imgur.com/2SYDPBn"  width="50%" height="50%">
+</div>
+
+<div align="center">
+<img src="https://imgur.com/061vt0S"  width="50%" height="50%">
+</div>
+
+<div align="center">
+<img src="https://imgur.com/IA9lIJH"  width="50%" height="50%">
+</div>
+
