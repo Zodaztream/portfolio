@@ -34,6 +34,11 @@ A user shall be able to display stock-charts from *Yahoo Finance API* (or others
 ### Client
 React with Redux implemented
 
+*D3* Will be used to display stock-charts
+
+*React Mosaic* will be used to allow profile customization
+
+*Typescript* to keep the code clean.
 ### Server
 *Gevent* server with *Flask-SQL-lite backend* in *Python*.
 
@@ -41,13 +46,8 @@ React with Redux implemented
 
 Profile customizations will be stored as *JSON-files* in the *database*
 
-*D3* Will be used to display stock-charts
-
 *Yahoo Finance API* will be used to gather data to create said stock-charts
 
-*React Mosaic* will be used to allow profile customization
-
-*Typescript* to keep the code clean.
 
 ## More images
 
