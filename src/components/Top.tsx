@@ -2,6 +2,9 @@ import React, { CSSProperties } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { findByLabelText } from "@testing-library/dom";
 import SearchIcon from "@material-ui/icons/Search";
+import AccountBox from "@material-ui/icons/AccountBox";
+import Close from "@material-ui/icons/Close";
+import Create from "@material-ui/icons/Create";
 import InputBase from "@material-ui/core/InputBase";
 import {
   Theme,
@@ -12,30 +15,9 @@ import {
 
 // actually might need a local state for typing in a name an
 // takeaway, use makeStyles in conjunction with CreateStyles and then use "className" instead of "style" as prop.
+// perhaps move these into its own file and do export default (much like actions) and then perhaps reach the sytles by {style} from ..., maybe need to do that in an index file!
 const styleSheet = makeStyles((theme: Theme) =>
   createStyles({
-    mainContainer: {
-      display: "flex",
-      width: "100%",
-      height: "100%",
-      backgroundColor: "#C0C1C1",
-      flexDirection: "row" as "row" // ugly, but not sure what else  to do
-    },
-    searchBar: {
-      margin: "0.5% 0.5% 0.5% 1%",
-      display: "flex",
-      flex: "1",
-      justifyContent: "flexStart",
-      backgroundColor: "white"
-    },
-
-    toolBar: {
-      display: "flex",
-      flex: "1",
-      justifyContent: "flexEnd",
-      backgroundColor: "teal"
-    },
-
     searchIcon: {
       padding: theme.spacing(0, 2),
       height: "100%",
@@ -76,6 +58,23 @@ const styleSheet = makeStyles((theme: Theme) =>
         marginLeft: theme.spacing(3),
         width: "auto"
       }
+    },
+
+    toolBarItem: {
+      display: "flex",
+      flex: "1",
+      width: "100%",
+      height: "100%",
+      justifyContent: "flexEnd",
+      alignItems: "center" as "center",
+      opacity: 0.5,
+      transition: theme.transitions.create(["backgroundColor", "opacity"], {
+        duration: theme.transitions.duration.complex
+      }),
+      "&:hover": {
+        backgroundColor: fade(theme.palette.common.white, 0.25),
+        opacity: 1
+      }
     }
   })
 );
@@ -86,12 +85,12 @@ const styleSheet_outside = {
     width: "100%",
     height: "100%",
     backgroundColor: "#C0C1C1",
-    flexDirection: "row" as "row" // ugly, but not sure what else  to do
+    flexDirection: "row" as "row"
   },
   searchBar: {
     margin: "0.5% 0.5% 0.5% 1%",
     display: "flex",
-    flex: "1",
+    flex: "5",
     justifyContent: "flexStart",
     alignItems: "center" as "center",
     backgroundColor: "white"
@@ -100,26 +99,18 @@ const styleSheet_outside = {
   toolBar: {
     display: "flex",
     flex: "1",
-    justifyContent: "flexEnd",
     backgroundColor: "teal"
+    // might be cool to have hover and fade : look at styleSheet as reference"
+  },
+
+  toolBarIcon: {
+    display: "flex",
+    flex: "1",
+    fill: "white",
+    height: "75%",
+    width: "20%"
   }
 };
-
-/**
- * <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </div>
- */
 
 function Top() {
   const classes = styleSheet();
@@ -142,7 +133,17 @@ function Top() {
           />
         </div>
       </div>
-      <div style={styleSheet_outside.toolBar}>&nbsp;</div>
+      <div style={styleSheet_outside.toolBar}>
+        <div className={classes.toolBarItem} onClick={() => {}}>
+          <AccountBox style={styleSheet_outside.toolBarIcon} />
+        </div>
+        <div className={classes.toolBarItem} onClick={() => {}}>
+          <Create style={styleSheet_outside.toolBarIcon} />
+        </div>
+        <div className={classes.toolBarItem} onClick={() => {}}>
+          <Close style={styleSheet_outside.toolBarIcon} />
+        </div>
+      </div>
     </div>
   );
 }
