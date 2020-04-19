@@ -1,10 +1,148 @@
-import React from "react";
+import React, { CSSProperties } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { findByLabelText } from "@testing-library/dom";
+import SearchIcon from "@material-ui/icons/Search";
+import InputBase from "@material-ui/core/InputBase";
+import {
+  Theme,
+  makeStyles,
+  fade,
+  createStyles
+} from "@material-ui/core/styles";
+
+// actually might need a local state for typing in a name an
+// takeaway, use makeStyles in conjunction with CreateStyles and then use "className" instead of "style" as prop.
+const styleSheet = makeStyles((theme: Theme) =>
+  createStyles({
+    mainContainer: {
+      display: "flex",
+      width: "100%",
+      height: "100%",
+      backgroundColor: "#C0C1C1",
+      flexDirection: "row" as "row" // ugly, but not sure what else  to do
+    },
+    searchBar: {
+      margin: "0.5% 0.5% 0.5% 1%",
+      display: "flex",
+      flex: "1",
+      justifyContent: "flexStart",
+      backgroundColor: "white"
+    },
+
+    toolBar: {
+      display: "flex",
+      flex: "1",
+      justifyContent: "flexEnd",
+      backgroundColor: "teal"
+    },
+
+    searchIcon: {
+      padding: theme.spacing(0, 2),
+      height: "100%",
+      position: "absolute" as "absolute",
+      pointerEvents: "none" as "none",
+      display: "flex",
+      alignItems: "center" as "center",
+      justifyContent: "center" as "center"
+    },
+
+    inputRoot: {
+      //color: "inherit"
+      color: "inherit"
+    },
+
+    inputInput: {
+      padding: theme.spacing(1, 1, 1, 0),
+      //vertical padding + font size from searchIcon
+      paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+      transition: theme.transitions.create("width"),
+      width: "100%",
+      [theme.breakpoints.up("md")]: {
+        width: "20ch"
+      }
+    },
+
+    search: {
+      position: "relative" as "relative",
+      borderRadius: theme.shape.borderRadius,
+      backgroundColor: fade(theme.palette.common.black, 0.15),
+      "&:hover": {
+        backgroundColor: fade(theme.palette.common.black, 0.25)
+      },
+      marginRight: theme.spacing(2),
+      marginLeft: 0,
+      width: "100%",
+      [theme.breakpoints.up("sm")]: {
+        marginLeft: theme.spacing(3),
+        width: "auto"
+      }
+    }
+  })
+);
+
+const styleSheet_outside = {
+  mainContainer: {
+    display: "flex",
+    width: "100%",
+    height: "100%",
+    backgroundColor: "#C0C1C1",
+    flexDirection: "row" as "row" // ugly, but not sure what else  to do
+  },
+  searchBar: {
+    margin: "0.5% 0.5% 0.5% 1%",
+    display: "flex",
+    flex: "1",
+    justifyContent: "flexStart",
+    alignItems: "center" as "center",
+    backgroundColor: "white"
+  },
+
+  toolBar: {
+    display: "flex",
+    flex: "1",
+    justifyContent: "flexEnd",
+    backgroundColor: "teal"
+  }
+};
+
+/**
+ * <div className={classes.search}>
+            <div className={classes.searchIcon}>
+              <SearchIcon />
+            </div>
+            <InputBase
+              placeholder="Search…"
+              classes={{
+                root: classes.inputRoot,
+                input: classes.inputInput,
+              }}
+              inputProps={{ 'aria-label': 'search' }}
+            />
+          </div>
+ */
 
 function Top() {
+  const classes = styleSheet();
+
   return (
-    <div>
-      <h1></h1>
+    <div style={styleSheet_outside.mainContainer}>
+      <div style={styleSheet_outside.searchBar}>
+        <div className={classes.search}>
+          <div className={classes.searchIcon}>
+            <SearchIcon />
+          </div>
+          <InputBase
+            classes={{
+              root: classes.inputRoot,
+              input: classes.inputInput
+            }}
+            placeholder="Search..."
+            inputProps={{ "aria-label": "search" }}
+            //onChange, set the local state
+          />
+        </div>
+      </div>
+      <div style={styleSheet_outside.toolBar}>&nbsp;</div>
     </div>
   );
 }
