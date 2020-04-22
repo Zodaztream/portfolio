@@ -6,6 +6,7 @@ import AccountBox from "@material-ui/icons/AccountBox";
 import Close from "@material-ui/icons/Close";
 import Create from "@material-ui/icons/Create";
 import InputBase from "@material-ui/core/InputBase";
+import { edit } from "../actions";
 import {
   Theme,
   makeStyles,
@@ -114,6 +115,7 @@ const styleSheet_outside = {
 
 function Top() {
   const classes = styleSheet();
+  const dispatch = useDispatch();
 
   return (
     <div style={styleSheet_outside.mainContainer}>
@@ -137,7 +139,12 @@ function Top() {
         <div className={classes.toolBarItem} onClick={() => {}}>
           <AccountBox style={styleSheet_outside.toolBarIcon} />
         </div>
-        <div className={classes.toolBarItem} onClick={() => {}}>
+        <div
+          className={classes.toolBarItem}
+          onClick={() => {
+            dispatch(edit());
+          }}
+        >
           <Create style={styleSheet_outside.toolBarIcon} />
         </div>
         <div className={classes.toolBarItem} onClick={() => {}}>

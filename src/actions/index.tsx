@@ -5,4 +5,9 @@ export const increment = (/*Arg: type */) => {
   };
 };
 
+export const edit = () => {
+  return {
+    type: "TOGGLE_EDIT"
+  };
+};
 //export const decrement

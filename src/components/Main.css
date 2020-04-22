@@ -1,0 +1,21 @@
+@keyframes blink {
+  from {
+    border-color: white;
+  }
+  to {
+    border-color: transparent;
+  }
+}
+
+.outline {
+  /*or other element you want*/
+  border-style: dashed;
+  animation-name: blink;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  -moz-transition: all 0.5s ease-in;
+  transition: all 0.5s ease-in;
+  width: 99.5vw;
+  height: 92vh;
+}
