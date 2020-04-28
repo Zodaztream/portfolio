@@ -1,15 +1,13 @@
 import { Reducer } from "redux";
-
-interface Element {
-  i: string;
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
+import { Element } from "../components/types";
+import { access } from "fs";
+import update from "immutability-helper";
+import { element } from "prop-types";
 
 interface ElementState {
-  elements: Element[];
+  elements: {
+    [key: string]: Element;
+  };
 }
 
 interface ActionType {
@@ -20,7 +18,7 @@ interface ActionType {
 //export interfaces instead of copying it to all (separate types file, probably index.types or something for easier import): https://redux.js.org/recipes/usage-with-typescript
 
 const initialUserState: ElementState = {
-  elements: []
+  elements: {}
 };
 
 // default state is 0, next time this is called, the state is called from data storage instead.
@@ -31,10 +29,18 @@ const gridReducer = (
   switch (action.type) {
     case "ADD_ELEMENT":
       return {
-        elements: [...state.elements, action.payload]
+        elements: { ...state.elements, [action.payload.i]: action.payload }
       };
     case "REMOVE_ELEMENT":
       return state;
+    case "UPDATE_ELEMENT":
+      return update(state, {
+        elements: {
+          [action.payload.i]: {
+            chart: { $set: "MSFT" } // We get error because it does not exist, because we do not create an element with this chart property. Maybe set element as "null" initially.
+          }
+        }
+      });
     default:
       return state;
   }

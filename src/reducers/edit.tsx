@@ -1,5 +1,3 @@
-import { Reducer } from "redux";
-
 interface editTypes {
   type: string;
 }

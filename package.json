@@ -16,6 +16,7 @@
     "@types/react-dom": "^16.9.6",
     "@types/react-grid-layout": "^0.17.1",
     "@types/react-redux": "^7.1.7",
+    "immutability-helper": "^3.0.2",
     "material-ui-icons": "^1.0.0-beta.36",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
@@ -24,6 +25,7 @@
     "react-mosaic-component": "^4.0.0",
     "react-redux": "^7.2.0",
     "react-scripts": "3.4.1",
+    "react-stockcharts": "^0.7.8",
     "redux": "^4.0.5",
     "typeface-roboto": "0.0.75",
     "typescript": "^3.8.3"

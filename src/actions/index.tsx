@@ -1,3 +1,4 @@
+import { Element } from "../components/types";
 export const increment = (/*Arg: type */) => {
   return {
     type: "INCREMENT"
@@ -11,17 +12,16 @@ export const edit = () => {
   };
 };
 
-interface Element {
-  i: string;
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
 export const addElement = (gridCell: Element) => {
   return {
     type: "ADD_ELEMENT",
+    payload: gridCell
+  };
+};
+
+export const updateElement = (gridCell: Element) => {
+  return {
+    type: "UPDATE_ELEMENT",
     payload: gridCell
   };
 };

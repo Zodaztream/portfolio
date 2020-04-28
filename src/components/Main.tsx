@@ -20,6 +20,7 @@ import Add from "@material-ui/icons/Add";
 import { createStyles, makeStyles, Theme } from "@material-ui/core";
 import { addElement } from "../actions";
 import { RootState } from "../reducers";
+import { Element } from "./types";
 // This might need to be a component, can't be a component because Hooks. ?
 
 // Put Amount of stockcharts or the div tags in a map, use Map functionality to create all the divs within the gridlayout
@@ -31,9 +32,8 @@ import { RootState } from "../reducers";
 // Create a proper JSON structure for each div tag with data-grid JSX. Loop through the JSON structure and do map with each respective
 // JSON element. Also, one JSON elemenet should be which yahoo-finance stockchart to show
 // Save button ?
-// Should the items be added to a redux state so that when we add, we dispatch an action, updating the state with the addition
 
-//LOcal states do work: Must use useState instead for funcion components
+//LOcal states do work: Must use useState instead for funcion components: https://reactjs.org/docs/hooks-state.html
 
 const useSelector: TypedUseSelectorHook<RootState> = useReduxSelector;
 
@@ -52,19 +52,6 @@ const styleSheet = makeStyles((theme: Theme) =>
   })
 );
 
-interface IState {
-  edit: Boolean;
-  elements: Element[];
-}
-
-interface Element {
-  i: string;
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
 // either predefined, or perhaps later on, we can have a drawer from which you can drag out a "shell/ghost/image" that when dropped will create an element at that grid position
 function addItem() {
   return {
@@ -77,6 +64,7 @@ function addItem() {
 }
 
 function generateElement(data: Element) {
+  console.log({ i: data.i, h: data.h, t: "HELLO" });
   return (
     <div
       key={data.i}
@@ -87,7 +75,7 @@ function generateElement(data: Element) {
       }}
       data-grid={{ x: data.x, y: data.y, w: data.w, h: data.h }}
     >
-      <StockChart></StockChart>
+      <StockChart id="2"></StockChart>
     </div>
   );
 }
@@ -134,7 +122,7 @@ function Main() {
         isResizable={isEdit ? true : false}
         isDraggable={isEdit ? true : false}
       >
-        {elements.map(generateElement)}
+        {Object.keys(elements).map(key => generateElement(elements[key]))}
         <div
           key="c"
           style={{
@@ -144,7 +132,7 @@ function Main() {
           }}
           data-grid={{ x: 4, y: 0, w: 1, h: 2 }}
         >
-          <StockChart></StockChart>
+          <StockChart id="2"></StockChart>
         </div>
       </GridLayout>
     </div>
