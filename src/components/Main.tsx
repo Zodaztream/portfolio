@@ -58,8 +58,9 @@ function addItem() {
     i: "_" + Math.random() * 100,
     x: 5,
     y: 5,
-    w: 1,
-    h: 2
+    w: 5,
+    h: 8,
+    chart: ""
   };
 }
 
@@ -75,7 +76,7 @@ function generateElement(data: Element) {
       }}
       data-grid={{ x: data.x, y: data.y, w: data.w, h: data.h }}
     >
-      <StockChart id="2"></StockChart>
+      <StockChart id={data.i} chart={data.chart}></StockChart>
     </div>
   );
 }
@@ -83,6 +84,7 @@ function generateElement(data: Element) {
 // Actually, we might actually have to have local states, as when you type in someone's name. you Obviously don't want old data.
 // but at least I learned something new :)
 //Question mark regarding this, will react update this element when no setstate is used?
+//Move out "isEdit" too its own "toolbar" return function
 function Main() {
   const isEdit = useSelector(state => state.edit);
   const elements = useSelector(state => state.elements.elements);
@@ -96,23 +98,6 @@ function Main() {
 
   return (
     <div className={isEdit ? "outline" : ""}>
-      {isEdit ? (
-        <div
-          className={classes.toolBarItem}
-          onClick={() => dispatch(addElement(addItem()))}
-        >
-          <Add
-            style={{
-              fill: "white",
-              height: "5vh",
-              width: "5vh"
-            }}
-          ></Add>
-        </div>
-      ) : (
-        ""
-      )}
-
       <GridLayout
         className="layout"
         cols={12}
@@ -122,18 +107,25 @@ function Main() {
         isResizable={isEdit ? true : false}
         isDraggable={isEdit ? true : false}
       >
+        {isEdit ? (
+          <div
+            key="ADD"
+            className={classes.toolBarItem}
+            onClick={() => dispatch(addElement(addItem()))}
+            data-grid={{ x: 0, y: 0, w: 1, h: 1, static: true }}
+          >
+            <Add
+              style={{
+                fill: "white",
+                height: "5vh",
+                width: "5vh"
+              }}
+            ></Add>
+          </div>
+        ) : (
+          <div key="ADD" data-grid={{ x: 0, y: 0, w: 1, h: 1, static: true }} />
+        )}
         {Object.keys(elements).map(key => generateElement(elements[key]))}
-        <div
-          key="c"
-          style={{
-            borderStyle: "dashed",
-            borderColor: "white",
-            opacity: "1"
-          }}
-          data-grid={{ x: 4, y: 0, w: 1, h: 2 }}
-        >
-          <StockChart id="2"></StockChart>
-        </div>
       </GridLayout>
     </div>
   );

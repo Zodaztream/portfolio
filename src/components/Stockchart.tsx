@@ -7,9 +7,12 @@ import { Element } from "./types";
 import { useDispatch } from "react-redux";
 import { RootState } from "../reducers";
 import { updateElement } from "../actions";
+import Chart from "./Chart";
+import { getData } from "./chartUtils";
 
 //https://medium.com/@vitalyb/dont-let-typescript-slow-you-down-92d394ec8c9f
 import { Theme, withStyles, createStyles } from "@material-ui/core/styles";
+import { DSVParsedArray } from "d3-dsv";
 
 interface IProps {
   classes: {
@@ -39,16 +42,43 @@ const styleSheet = (theme: Theme) =>
     }
   });
 
+interface IData {
+  data: DSVParsedArray<any>;
+}
+
 function Stockchart(props: IProps) {
   const [choose, setChoose] = useState(false);
-
+  const [chart, setChart] = useState<IData | undefined>(undefined);
+  const [update, setUpdate] = useState(false);
   const dispatch = useDispatch();
+
+  console.log("rerender");
+
+  useEffect(() => {
+    //Should take the Chart prop and call the API
+    getData().then(data => {
+      setChart({ data });
+    });
+  }, [update]);
+
   const { classes } = props;
+  //We ensure Typescript that chart will have data with "!"
   return (
-    <div style={{ height: "100%" }}>
+    <div style={{ height: "100%", width: "100%" }}>
       {choose ? <div></div> : ""}
-      {props.chart ? (
-        <div>{/** this.props.*/}</div>
+      {chart ? (
+        <div
+          style={{
+            display: "flex",
+            flex: "1",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "90%",
+            height: "100%"
+          }}
+        >
+          <Chart type="svg" data={chart!.data} />
+        </div>
       ) : (
         <div
           style={{
@@ -59,12 +89,14 @@ function Stockchart(props: IProps) {
             height: "100%"
           }}
         >
-          <div className={classes.toolBarItem}>
+          <div
+            className={classes.toolBarItem}
+            onClick={() =>
+              dispatch(updateElement({ i: props.id, chart: "MSFT" }))
+            }
+          >
             <ControlPoint
               //onClick = {() => setChoose(true) }
-              onClick={() =>
-                dispatch(updateElement({ i: props.id, chart: "MSFT" }))
-              }
               style={{
                 fill: "white",
                 height: "5vh",
