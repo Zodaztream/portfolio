@@ -21,7 +21,14 @@ export const addElement = (gridCell: Element) => {
 
 export const updateElement = (gridCell: Element) => {
   return {
-    type: "UPDATE_ELEMENT",
+    type: "UPDATE_ELEMENT", // ideally, should be enum types instead of strings (for safety)
+    payload: gridCell
+  };
+};
+
+export const updateSizePos = (gridCell: Element) => {
+  return {
+    type: "UPDATE_SIZE_AND_POSITION",
     payload: gridCell
   };
 };

@@ -1,18 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, ReactChild } from "react";
 //import { useSelector, useDispatch } from "react-redux";
 import ControlPoint from "@material-ui/icons/ControlPoint";
 // @ts-ignore
 import { TypeChooser } from "react-stockcharts";
+import { SizeMe } from "react-sizeme";
 import { Element } from "./types";
 import { useDispatch } from "react-redux";
 import { RootState } from "../reducers";
 import { updateElement } from "../actions";
 import Chart from "./Chart";
 import { getData } from "./chartUtils";
-
+// @ts-ignore
+import useDimensions from "react-use-dimensions";
 //https://medium.com/@vitalyb/dont-let-typescript-slow-you-down-92d394ec8c9f
 import { Theme, withStyles, createStyles } from "@material-ui/core/styles";
 import { DSVParsedArray } from "d3-dsv";
+
+/** LOOK INTO THIS TO FIX THE SLOW TRANSITION.
+ *   classes: {
+    [toolBarItem: string]: ReactChild;
+  };
+ */
 
 interface IProps {
   classes: {
@@ -20,6 +28,7 @@ interface IProps {
   };
   chart?: string;
   id: string;
+  grid: Element;
 }
 
 interface IState {
@@ -47,12 +56,14 @@ interface IData {
 }
 
 function Stockchart(props: IProps) {
+  const [ref, { width, height }] = useDimensions();
   const [choose, setChoose] = useState(false);
   const [chart, setChart] = useState<IData | undefined>(undefined);
   const [update, setUpdate] = useState(false);
   const dispatch = useDispatch();
 
-  console.log("rerender");
+  // access grid dimension  by props.grid
+  console.log(props.grid.w);
 
   useEffect(() => {
     //Should take the Chart prop and call the API
@@ -68,9 +79,9 @@ function Stockchart(props: IProps) {
       {choose ? <div></div> : ""}
       {chart ? (
         <div
+          ref={ref}
           style={{
             display: "flex",
-            flex: "1",
             justifyContent: "center",
             alignItems: "center",
             width: "90%",

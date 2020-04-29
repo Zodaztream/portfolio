@@ -50,7 +50,6 @@ class CandleStickChartForContinuousIntraDay extends React.Component<Props> {
   render() {
     const { type, data, width, ratio, height } = this.props;
 
-    console.log(data[Math.max(0, data.length - 150)]);
     console.log(width);
 
     const xAccessor = (d: IData) => d.date;

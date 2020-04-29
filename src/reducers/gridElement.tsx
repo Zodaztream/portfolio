@@ -33,11 +33,22 @@ const gridReducer = (
       };
     case "REMOVE_ELEMENT":
       return state;
-    case "UPDATE_ELEMENT":
+    case "UPDATE_ELEMENT": // change this to UPDATE_CHART or something
       return update(state, {
         elements: {
           [action.payload.i]: {
             chart: { $set: "MSFT" } // We get error because it does not exist, because we do not create an element with this chart property. Maybe set element as "null" initially.
+          }
+        }
+      });
+    case "UPDATE_SIZE_AND_POSITION":
+      return update(state, {
+        elements: {
+          [action.payload.i]: {
+            x: { $set: action.payload.x },
+            y: { $set: action.payload.y },
+            w: { $set: action.payload.w },
+            h: { $set: action.payload.h }
           }
         }
       });
