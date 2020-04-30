@@ -37,7 +37,7 @@ const gridReducer = (
       return update(state, {
         elements: {
           [action.payload.i]: {
-            chart: { $set: "MSFT" } // We get error because it does not exist, because we do not create an element with this chart property. Maybe set element as "null" initially.
+            chart: { $set: action.payload.chart } // We get error because it does not exist, because we do not create an element with this chart property. Maybe set element as "null" initially.
           }
         }
       });

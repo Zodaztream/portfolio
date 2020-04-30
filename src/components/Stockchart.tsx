@@ -1,9 +1,12 @@
+/**
+ * Stockchart component:
+ * Displays an intra day, continous, candle stick chart if stock-name is provided
+ */
+
 import React, { useEffect, useState, ReactChild } from "react";
 //import { useSelector, useDispatch } from "react-redux";
 import ControlPoint from "@material-ui/icons/ControlPoint";
 // @ts-ignore
-import { TypeChooser } from "react-stockcharts";
-import { SizeMe } from "react-sizeme";
 import { Element } from "./types";
 import { useDispatch } from "react-redux";
 import { RootState } from "../reducers";
@@ -11,29 +14,10 @@ import { updateElement } from "../actions";
 import Chart from "./Chart";
 import { getData } from "./chartUtils";
 // @ts-ignore
-import useDimensions from "react-use-dimensions";
 //https://medium.com/@vitalyb/dont-let-typescript-slow-you-down-92d394ec8c9f
 import { Theme, withStyles, createStyles } from "@material-ui/core/styles";
 import { DSVParsedArray } from "d3-dsv";
-
-/** LOOK INTO THIS TO FIX THE SLOW TRANSITION.
- *   classes: {
-    [toolBarItem: string]: ReactChild;
-  };
- */
-
-interface IProps {
-  classes: {
-    toolBarItem: string;
-  };
-  chart?: string;
-  id: string;
-  grid: Element;
-}
-
-interface IState {
-  show: Boolean;
-}
+import StockPicker from "./StockPicker";
 
 //Alpha Vantage API for stockchart data. 5 minute interval:  IUDORZ4BGIONCWPR , https://www.alphavantage.co/documentation/ (information how to calln)
 
@@ -51,35 +35,57 @@ const styleSheet = (theme: Theme) =>
     }
   });
 
+//Type for fetched data
 interface IData {
   data: DSVParsedArray<any>;
 }
 
+/** LOOK INTO THIS TO FIX THE SLOW TRANSITION.
+ *   classes: {
+    [toolBarItem: string]: ReactChild;
+  };
+ */
+
+// Types for possible props
+interface IProps {
+  classes: {
+    toolBarItem: string;
+  };
+  chart?: string; //The tag of the data to show e.g. "MSFT", "TSLA", "AMD"
+  id: string;
+  grid: Element;
+}
+
+/**
+ * @description Allows to choose data to display and displays a Candle stick chart for continous intra day.
+ * @params props: IProps - the properties this function component may take, see IProps
+ *  for more info
+ * @returns render - the component to render
+ */
 function Stockchart(props: IProps) {
-  const [ref, { width, height }] = useDimensions();
   const [choose, setChoose] = useState(false);
   const [chart, setChart] = useState<IData | undefined>(undefined);
   const [update, setUpdate] = useState(false);
   const dispatch = useDispatch();
 
-  // access grid dimension  by props.grid
-  console.log(props.grid.w);
+  console.log(choose);
 
   useEffect(() => {
     //Should take the Chart prop and call the API
-    getData().then(data => {
-      setChart({ data });
-    });
-  }, [update]);
+    if (props.chart) {
+      getData().then(data => {
+        setChart({ data });
+      });
+      setChoose(false);
+    }
+  }, [update, props.chart]);
 
   const { classes } = props;
   //We ensure Typescript that chart will have data with "!"
   return (
     <div style={{ height: "100%", width: "100%" }}>
-      {choose ? <div></div> : ""}
       {chart ? (
         <div
-          ref={ref}
           style={{
             display: "flex",
             justifyContent: "center",
@@ -90,6 +96,8 @@ function Stockchart(props: IProps) {
         >
           <Chart type="svg" data={chart!.data} />
         </div>
+      ) : choose ? (
+        <StockPicker id={props.id} />
       ) : (
         <div
           style={{
@@ -100,14 +108,9 @@ function Stockchart(props: IProps) {
             height: "100%"
           }}
         >
-          <div
-            className={classes.toolBarItem}
-            onClick={() =>
-              dispatch(updateElement({ i: props.id, chart: "MSFT" }))
-            }
-          >
+          <div className={classes.toolBarItem}>
             <ControlPoint
-              //onClick = {() => setChoose(true) }
+              onClick={() => setChoose(true)}
               style={{
                 fill: "white",
                 height: "5vh",

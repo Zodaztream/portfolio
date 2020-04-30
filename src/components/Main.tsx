@@ -1,12 +1,9 @@
 /**
  * Main Component:
- * Uses React grid layout for customization
- *
+ * Displays a customizable grid layout with grid elements
  */
 
-import React, { useEffect } from "react";
-import createReactClass from "create-react-class";
-//@ts-ignore
+import React from "react";
 
 import {
   useSelector as useReduxSelector,
@@ -16,7 +13,6 @@ import {
 import GridLayout, { WidthProvider, Layout } from "react-grid-layout";
 import "../../node_modules/react-grid-layout/css/styles.css";
 import "../../node_modules/react-resizable/css/styles.css";
-import { borderColor } from "@material-ui/system";
 import StockChart from "./Stockchart";
 import "./Main.css";
 import Add from "@material-ui/icons/Add";
@@ -26,7 +22,6 @@ import { RootState } from "../reducers";
 import { Element } from "./types";
 
 const ReactGridLayout = WidthProvider(GridLayout);
-// This might need to be a component, can't be a component because Hooks. ?
 
 // perhaps throw props down to Stockchart (the $TAG (e.g. MSFT) link to use for to display each stockchart)
 // idea is to have a JSON file with these div tags in the database, we'll then parse this data
@@ -36,13 +31,7 @@ const ReactGridLayout = WidthProvider(GridLayout);
 // JSON element. Also, one JSON elemenet should be which yahoo-finance stockchart to show
 // Save button ?
 
-//LOcal states do work: Must use useState instead for funcion components: https://reactjs.org/docs/hooks-state.html
-
 const useSelector: TypedUseSelectorHook<RootState> = useReduxSelector;
-
-type Props = {
-  onLayoutChange?: (layout: Layout[]) => void;
-};
 
 const styleSheet = makeStyles((theme: Theme) =>
   createStyles({
@@ -71,6 +60,11 @@ function addItem() {
   };
 }
 
+/**
+ * @description Creates a grid element from given data
+ * @params data: Element - grid element data
+ * @returns Component to render
+ */
 function generateElement(data: Element) {
   console.log({ i: data.i, w: data.w, t: "HELLO" });
   return (
@@ -90,18 +84,17 @@ function generateElement(data: Element) {
 
 // Actually, we might actually have to have local states, as when you type in someone's name. you Obviously don't want old data.
 // but at least I learned something new :)
-//Question mark regarding this, will react update this element when no setstate is used?
 //Move out "isEdit" too its own "toolbar" return function
-function Main(props: Props) {
+
+/**
+ * @description Displays react grid layout and its grid components
+ * @returns Element to render
+ */
+function Main() {
   const isEdit = useSelector(state => state.edit);
   const elements = useSelector(state => state.elements.elements);
   const classes = styleSheet();
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    // Update the document title using the browser API
-    console.log("Updated");
-  });
 
   // onResizeStop, onDragStop => dispatch to state and update state, because we get the elements from the state.
   // however, nmight cause a loop.
@@ -132,7 +125,7 @@ function Main(props: Props) {
           dispatch(updateSizePos(element));
         }}
       >
-        {isEdit ? (
+        {isEdit ? ( // Edit bar
           <div
             key="ADD"
             className={classes.toolBarItem}
