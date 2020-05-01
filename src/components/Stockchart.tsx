@@ -68,6 +68,12 @@ function Stockchart(props: IProps) {
   const [update, setUpdate] = useState(false);
   const dispatch = useDispatch();
 
+  // implement a function which perform "setChoose"
+  //
+  const updateChoose = (value: boolean) => {
+    setChoose(value);
+  };
+
   useEffect(() => {
     //Should take the Chart prop and call the API
     if (props.chart) {
@@ -95,7 +101,7 @@ function Stockchart(props: IProps) {
           <Chart type="svg" data={chart!.data} id={props.id} />
         </div>
       ) : choose ? (
-        <StockPicker id={props.id} />
+        <StockPicker id={props.id} onChoose={updateChoose} />
       ) : (
         <div
           style={{

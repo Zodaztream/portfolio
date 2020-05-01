@@ -31,11 +31,12 @@ const useStyles = makeStyles({
 
 type IProps = {
   id: string;
+  onChoose: (value: boolean) => void;
 };
 
 /**
- * @description
- * @returns
+ * @description Displays MUI card with a search bar, exit button and an apply button to update a chart in the store
+ * @returns Component to render
  */
 function StockPicker(props: IProps) {
   const classes = useStyles();
@@ -59,7 +60,7 @@ function StockPicker(props: IProps) {
       <Card className={classes.root}>
         <CardHeader
           action={
-            <IconButton aria-label="Exit">
+            <IconButton aria-label="Exit" onClick={() => props.onChoose(false)}>
               <ExitToApp />
             </IconButton>
           }
