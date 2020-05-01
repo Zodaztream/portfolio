@@ -68,8 +68,6 @@ function Stockchart(props: IProps) {
   const [update, setUpdate] = useState(false);
   const dispatch = useDispatch();
 
-  console.log(choose);
-
   useEffect(() => {
     //Should take the Chart prop and call the API
     if (props.chart) {
@@ -94,7 +92,7 @@ function Stockchart(props: IProps) {
             height: "100%"
           }}
         >
-          <Chart type="svg" data={chart!.data} />
+          <Chart type="svg" data={chart!.data} id={props.id} />
         </div>
       ) : choose ? (
         <StockPicker id={props.id} />

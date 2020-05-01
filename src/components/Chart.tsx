@@ -44,11 +44,12 @@ type Props = {
   height: number;
   ratio: number;
   type: string;
+  id: string;
 };
 
 class CandleStickChartForContinuousIntraDay extends React.Component<Props> {
   render() {
-    const { type, data, width, ratio, height } = this.props;
+    const { type, data, width, ratio, height, id } = this.props;
 
     console.log(width);
 
@@ -71,7 +72,7 @@ class CandleStickChartForContinuousIntraDay extends React.Component<Props> {
         xExtents={xExtents}
       >
         <Chart
-          id={2}
+          id={id}
           yExtents={[(d: IData) => d.volume]}
           height={150}
           origin={(w: number, h: number) => [0, h - 150]}
@@ -117,7 +118,7 @@ class CandleStickChartForContinuousIntraDay extends React.Component<Props> {
           />
         </Chart>
         <Chart
-          id={1}
+          id={id + 2}
           yExtents={[(d: IData) => [d.high, d.low]]}
           padding={{ top: 40, bottom: 20 }}
         >

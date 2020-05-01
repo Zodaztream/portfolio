@@ -121,8 +121,8 @@ function Main() {
             w: newLayout.w,
             h: newLayout.h
           };
-          window.dispatchEvent(new Event("resize"));
           dispatch(updateSizePos(element));
+          window.dispatchEvent(new Event("resize"));
         }}
       >
         {isEdit ? ( // Edit bar
