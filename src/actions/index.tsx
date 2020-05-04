@@ -32,4 +32,11 @@ export const updateSizePos = (gridCell: Element) => {
     payload: gridCell
   };
 };
+
+export const updateBackground = (imageUrl: string) => {
+  return {
+    type: "UPDATE_BACKGROUND",
+    payload: imageUrl
+  };
+};
 //export const decrement
