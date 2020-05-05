@@ -18,16 +18,10 @@ const useSelector: TypedUseSelectorHook<RootState> = useReduxSelector;
 // probably the way to go is to store the image links as database entry
 // also, on a side-note: Have a log-in screen when not signed in. Can still search for people's profiles, though.
 
-const styleSheet = {
-  layoutTop: {
-    backgroundColor: "black",
-    height: "7%",
-    padding: "0",
-    margin: "0"
-  },
-  layoutMain: {
+function mainStyle(backgroundURL: string) {
+  return {
     backgroundColor: "#519674",
-    backgroundImage: `url(${background})`,
+    backgroundImage: `url(${backgroundURL})`,
     height: "93%",
     padding: "0",
     margin: "0",
@@ -35,6 +29,15 @@ const styleSheet = {
     backgroundPosition: "center",
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover"
+  };
+}
+
+const styleSheet = {
+  layoutTop: {
+    backgroundColor: "black",
+    height: "7%",
+    padding: "0",
+    margin: "0"
   }
 };
 
@@ -46,7 +49,7 @@ function App() {
         {" "}
         <Top></Top>
       </div>
-      <div className="main">
+      <div style={mainStyle(bgImage)}>
         <Main></Main>
       </div>
     </div>

@@ -3,7 +3,7 @@
  * Displays a customizable grid layout with grid elements
  */
 
-import React from "react";
+import React, { useState } from "react";
 
 import {
   useSelector as useReduxSelector,
@@ -16,10 +16,12 @@ import "../../node_modules/react-resizable/css/styles.css";
 import StockChart from "./Stockchart";
 import "./Main.css";
 import Add from "@material-ui/icons/Add";
+import AddPhotoAlternate from "@material-ui/icons/AddPhotoAlternate";
 import { createStyles, makeStyles, Theme } from "@material-ui/core";
-import { addElement, updateSizePos } from "../actions";
+import { addElement, updateSizePos, updateBackground } from "../actions";
 import { RootState } from "../reducers";
 import { Element } from "./types";
+import BgSelector from "./BgSelector";
 
 const ReactGridLayout = WidthProvider(GridLayout);
 
@@ -93,6 +95,7 @@ function generateElement(data: Element) {
 function Main() {
   const isEdit = useSelector(state => state.edit);
   const elements = useSelector(state => state.elements.elements);
+  const [showbg, setShowbg] = useState(false);
   const classes = styleSheet();
   const dispatch = useDispatch();
 
@@ -142,6 +145,41 @@ function Main() {
           </div>
         ) : (
           <div key="ADD" data-grid={{ x: 0, y: 0, w: 1, h: 1, static: true }} />
+        )}
+        {isEdit ? (
+          <div
+            key="EDIT_BG"
+            className={classes.toolBarItem}
+            onClick={() => setShowbg(true)} //Dispatch for now, but will open up a separate menu in which we paste the link
+            data-grid={{ x: 0, y: 1, w: 1, h: 1, static: true }}
+          >
+            <AddPhotoAlternate
+              style={{
+                fill: "white",
+                height: "5vh",
+                width: "5vh"
+              }}
+            ></AddPhotoAlternate>
+          </div>
+        ) : (
+          <div
+            key="EDIT_BG"
+            data-grid={{ x: 0, y: 1, w: 1, h: 1, static: true }}
+          />
+        )}
+
+        {showbg ? (
+          <div
+            key="BG_MENU"
+            data-grid={{ x: 1, y: 1, w: 1, h: 1, static: true }}
+          >
+            <BgSelector onChoose={setShowbg}></BgSelector>
+          </div>
+        ) : (
+          <div
+            key="BG_MENU"
+            data-grid={{ x: 1, y: 1, w: 1, h: 1, static: true }}
+          />
         )}
         {Object.keys(elements).map(key => generateElement(elements[key]))}
       </ReactGridLayout>
