@@ -1,6 +1,6 @@
 # TDDD27 2020 Portfolio
 
-*08/05/20 Progress report* : https://youtu.be/jHLrYLrzEbs
+**08/05/20 Progress report** : https://youtu.be/jHLrYLrzEbs
 
 Welcome to portfolio!
 
@@ -35,9 +35,9 @@ A user shall be able to display stock-charts from _Yahoo Finance API_ (or others
 
 React with Redux implemented
 
-_D3_ Will be used to display stock-charts
+_React stockcharts_ Will be used to display stock-charts
 
-_React Mosaic_ will be used to allow profile customization
+_React Grid layout_ will be used to allow profile customization
 
 _Typescript_ to keep the code clean.
 
@@ -47,9 +47,11 @@ _Gevent_ server with _Flask-SQL-lite backend_ in _Python_.
 
 _Postman_ will be used to test various http calls to the server
 
+_Redux devtools_ to ensure correct state updates in the redux store
+
 Profile customizations will be stored as _JSON-files_ in the _database_
 
-_Yahoo Finance API_ will be used to gather data to create said stock-charts
+_Alpha Vantage API_ will be used to gather data to create said stock-charts
 
 ## More images
 
