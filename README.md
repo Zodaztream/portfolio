@@ -23,11 +23,11 @@ the background image of their profile.
 
 A user shall be able to create a simple account and login
 
-A user shall be able to customize their profile by resizing chart elements, reshaping, and changing background.
+~~A user shall be able to customize their profile by resizing chart elements, reshaping, and changing background.~~ ✔️
 
 A user shall be able to visit others' profile by searching and see their stock-charts with their customization
 
-A user shall be able to display stock-charts from _Yahoo Finance API_ (or others, if such exist)
+~~A user shall be able to display stock-charts from _Alpha vantage API_ (or others, if such exist)~~ ✔️
 
 ## Technological specification
 
