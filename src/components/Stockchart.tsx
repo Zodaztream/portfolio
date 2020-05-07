@@ -78,6 +78,7 @@ function Stockchart(props: IProps) {
     //Should take the Chart prop and call the API
     if (props.chart) {
       getData().then(data => {
+        //console.log(data);
         setChart({ data });
       });
       setChoose(false);

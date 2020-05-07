@@ -133,7 +133,7 @@ function Main() {
             key="ADD"
             className={classes.toolBarItem}
             onClick={() => dispatch(addElement(addItem()))}
-            data-grid={{ x: 0, y: 0, w: 1, h: 1, static: true }}
+            data-grid={{ x: 0, y: 0, w: 0, h: 0, static: true }}
           >
             <Add
               style={{
@@ -144,14 +144,14 @@ function Main() {
             ></Add>
           </div>
         ) : (
-          <div key="ADD" data-grid={{ x: 0, y: 0, w: 1, h: 1, static: true }} />
+          <div key="ADD" data-grid={{ x: 0, y: 0, w: 0, h: 0, static: true }} />
         )}
         {isEdit ? (
           <div
             key="EDIT_BG"
             className={classes.toolBarItem}
             onClick={() => setShowbg(true)} //Dispatch for now, but will open up a separate menu in which we paste the link
-            data-grid={{ x: 0, y: 1, w: 1, h: 1, static: true }}
+            data-grid={{ x: 0, y: 1, w: 0, h: 0, static: true }}
           >
             <AddPhotoAlternate
               style={{
@@ -164,21 +164,18 @@ function Main() {
         ) : (
           <div
             key="EDIT_BG"
-            data-grid={{ x: 0, y: 1, w: 1, h: 1, static: true }}
+            data-grid={{ x: 0, y: 1, w: 0, h: 0, static: true }}
           />
         )}
 
         {showbg ? (
-          <div
-            key="BG_MENU"
-            data-grid={{ x: 1, y: 1, w: 1, h: 1, static: true }}
-          >
+          <div key="BG_MENU" data-grid={{ x: 0.5, y: 1, w: 0, h: 0 }}>
             <BgSelector onChoose={setShowbg}></BgSelector>
           </div>
         ) : (
           <div
             key="BG_MENU"
-            data-grid={{ x: 1, y: 1, w: 1, h: 1, static: true }}
+            data-grid={{ x: 0.5, y: 1, w: 0, h: 0, static: true }}
           />
         )}
         {Object.keys(elements).map(key => generateElement(elements[key]))}
