@@ -35,83 +35,6 @@ var testData = JSON.stringify({
     "6. Time Zone": "US/Eastern"
   },
   "Time Series (5min)": {
-    "2020-05-07 10:25:00": {
-      "1. open": "121.5300",
-      "2. high": "121.9307",
-      "3. low": "121.4800",
-      "4. close": "121.9000",
-      "5. volume": "32402"
-    },
-    "2020-05-07 10:20:00": {
-      "1. open": "121.6200",
-      "2. high": "121.6772",
-      "3. low": "121.5100",
-      "4. close": "121.5600",
-      "5. volume": "29351"
-    },
-    "2020-05-07 10:15:00": {
-      "1. open": "121.8635",
-      "2. high": "121.9678",
-      "3. low": "121.5109",
-      "4. close": "121.6900",
-      "5. volume": "35564"
-    },
-    "2020-05-07 10:10:00": {
-      "1. open": "122.4500",
-      "2. high": "122.4900",
-      "3. low": "121.8200",
-      "4. close": "121.8700",
-      "5. volume": "59528"
-    },
-    "2020-05-07 10:05:00": {
-      "1. open": "122.0800",
-      "2. high": "122.4800",
-      "3. low": "122.0200",
-      "4. close": "122.4500",
-      "5. volume": "110234"
-    },
-    "2020-05-07 10:00:00": {
-      "1. open": "122.0600",
-      "2. high": "122.2158",
-      "3. low": "122.0200",
-      "4. close": "122.1000",
-      "5. volume": "44578"
-    },
-    "2020-05-07 09:55:00": {
-      "1. open": "122.1300",
-      "2. high": "122.2200",
-      "3. low": "121.9850",
-      "4. close": "122.0200",
-      "5. volume": "63121"
-    },
-    "2020-05-07 09:50:00": {
-      "1. open": "122.0900",
-      "2. high": "122.3300",
-      "3. low": "122.0400",
-      "4. close": "122.1000",
-      "5. volume": "60179"
-    },
-    "2020-05-07 09:45:00": {
-      "1. open": "121.9700",
-      "2. high": "122.1800",
-      "3. low": "121.9100",
-      "4. close": "122.0900",
-      "5. volume": "55799"
-    },
-    "2020-05-07 09:40:00": {
-      "1. open": "122.4400",
-      "2. high": "122.5150",
-      "3. low": "121.9800",
-      "4. close": "122.0400",
-      "5. volume": "75826"
-    },
-    "2020-05-07 09:35:00": {
-      "1. open": "122.9800",
-      "2. high": "123.2600",
-      "3. low": "122.3800",
-      "4. close": "122.4960",
-      "5. volume": "160247"
-    },
     "2020-05-06 16:00:00": {
       "1. open": "123.3000",
       "2. high": "123.3800",
@@ -657,111 +580,46 @@ var testData = JSON.stringify({
       "3. low": "123.2000",
       "4. close": "123.6124",
       "5. volume": "115470"
-    },
-    "2020-05-05 16:00:00": {
-      "1. open": "122.9300",
-      "2. high": "122.9300",
-      "3. low": "122.5500",
-      "4. close": "122.5800",
-      "5. volume": "146808"
-    },
-    "2020-05-05 15:55:00": {
-      "1. open": "122.8100",
-      "2. high": "123.0300",
-      "3. low": "122.6700",
-      "4. close": "122.9400",
-      "5. volume": "85000"
-    },
-    "2020-05-05 15:50:00": {
-      "1. open": "122.8082",
-      "2. high": "122.8277",
-      "3. low": "122.5400",
-      "4. close": "122.7400",
-      "5. volume": "63444"
-    },
-    "2020-05-05 15:45:00": {
-      "1. open": "122.6700",
-      "2. high": "122.8380",
-      "3. low": "122.4700",
-      "4. close": "122.8200",
-      "5. volume": "36206"
-    },
-    "2020-05-05 15:40:00": {
-      "1. open": "122.8800",
-      "2. high": "122.9800",
-      "3. low": "122.5500",
-      "4. close": "122.6600",
-      "5. volume": "39688"
-    },
-    "2020-05-05 15:35:00": {
-      "1. open": "123.0100",
-      "2. high": "123.1400",
-      "3. low": "122.8400",
-      "4. close": "122.9200",
-      "5. volume": "40373"
-    },
-    "2020-05-05 15:30:00": {
-      "1. open": "123.3600",
-      "2. high": "123.4800",
-      "3. low": "122.8800",
-      "4. close": "123.0600",
-      "5. volume": "52499"
-    },
-    "2020-05-05 15:25:00": {
-      "1. open": "123.3016",
-      "2. high": "123.4000",
-      "3. low": "123.1600",
-      "4. close": "123.4000",
-      "5. volume": "25107"
-    },
-    "2020-05-05 15:20:00": {
-      "1. open": "123.8600",
-      "2. high": "123.8600",
-      "3. low": "123.3346",
-      "4. close": "123.3346",
-      "5. volume": "46643"
-    },
-    "2020-05-05 15:15:00": {
-      "1. open": "123.8000",
-      "2. high": "123.9200",
-      "3. low": "123.7800",
-      "4. close": "123.8900",
-      "5. volume": "33291"
-    },
-    "2020-05-05 15:10:00": {
-      "1. open": "123.8100",
-      "2. high": "123.8600",
-      "3. low": "123.7000",
-      "4. close": "123.8150",
-      "5. volume": "26316"
     }
   }
 });
 
 const parseDateTime = timeParse("%Y-%m-%d %H:%M:%S");
 
-interface ElementState {
-  elements: {
-    [key: string]: Element;
-  };
+interface DataStruct{
+  [date: string]: {};
+}
+
+/**
+ * @description
+ * @param data : data to trim to only show today's date
+ * @returns
+ */
+function trimData(data: DataStruct) {
+  
+  var today = new Date();
+  var result : DataStruct  = {}
+  Object.keys(data).map((date: string) => {
+    var rawDate = parseDateTime(date);
+    //special case for weekend
+    if(today.getDate() == rawDate?.getDate() || [6, 0].includes(today.getDay()) ){ //if no data is returned, then it will just fail. So when we fetch data, ensure that if it's a weekend, we still get the previous day's data
+      result[date] = data[date];
+    }
+  });
+  return result;
 }
 
 function convertJsonToCsv(data: string) {
-  var test = JSON.parse(testData);
+  var test = JSON.parse(data);
   var testTime = test["Time Series (5min)"]; //might allow them to change this in the future, to show longer versus shorter. (must pay for shorter)
+  testTime = trimData(testTime);
   var dates = Object.keys(testTime);
-  //var headers = Object.keys(testTime[dates[0]]);
-  // THIS WORKS, but it the chart util shows it poorly in the beginning because it's zoomed in. Maybe have weekly data?
   var headers: string[] = ["open", "high", "low", "close", "volume", "date"];
   let csv = Object.keys(testTime).map(
     date =>
       Object.keys(testTime[date])
         .map(innerKey => testTime[date][innerKey])
         .join(",")
-    //console.log(csv);
-
-    //https://stackoverflow.com/questions/14964035/how-to-export-javascript-array-info-to-csv-on-client-side
-    // https://stackoverflow.com/questions/8847766/how-to-convert-json-to-csv-format-and-store-in-a-variable
   );
   csv = csv.map((elem, i) => elem + "," + dates[i]);
   csv.unshift(headers.join(","));
@@ -770,10 +628,10 @@ function convertJsonToCsv(data: string) {
   return csvOut;
 }
 
-export function getData() {
-  // take the tag as argument and is  IUDORZ4BGIONCWPR , https://www.alphavantage.co/documentation/ (information how to calln)
+export function getData(tag: string) {
+  // take the tag as argument and is  IUDORZ4BGIONCWPR , https://www.alphavantage.co/documentation/ Only allowed 5 calls a minute with a total of 500 calls a day.
   const promiseIntraDayContinuous = fetch(
-    //"https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=IBM&interval=5min&apikey=IUDORZ4BGIONCWPR"
+    //`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${tag}&interval=5min&apikey=IUDORZ4BGIONCWPR`
     "https://cdn.rawgit.com/rrag/react-stockcharts/master/docs/data/bitfinex_xbtusd_1m.csv"
   )
     .then(response => response.text())

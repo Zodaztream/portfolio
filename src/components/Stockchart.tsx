@@ -77,7 +77,7 @@ function Stockchart(props: IProps) {
   useEffect(() => {
     //Should take the Chart prop and call the API
     if (props.chart) {
-      getData().then(data => {
+      getData(props.chart).then(data => {
         //console.log(data);
         setChart({ data });
       });
