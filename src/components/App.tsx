@@ -43,14 +43,21 @@ const styleSheet = {
 
 function App() {
   const bgImage = useSelector(state => state.backgroundImage);
+  const showAccountMenu = useSelector(state => state.toggleAccountMenu);
   return (
     <div>
-      <div style={styleSheet.layoutTop}>
-        {" "}
-        <Top></Top>
-      </div>
-      <div style={mainStyle(bgImage)}>
-        <Main></Main>
+      {showAccountMenu ? <div></div> : ""}
+      <div
+        className={showAccountMenu ? "blur_behind" : ""}
+        style={{ width: "100%", height: "100%" }}
+      >
+        <div style={styleSheet.layoutTop}>
+          {" "}
+          <Top></Top>
+        </div>
+        <div style={mainStyle(bgImage)}>
+          <Main></Main>
+        </div>
       </div>
     </div>
   );

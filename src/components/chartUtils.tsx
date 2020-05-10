@@ -637,35 +637,6 @@ export function getData(tag: string) {
     .then(response => response.text())
     .then(data => {
       var csv = convertJsonToCsv(testData);
-      // data might be cometeply text, not sure. Provided that it's ".text", it probably is.
-      //console.log(data); you can ask for csv data but there would've been a problem anyway.
-      //var test = JSON.parse(testData);
-      //var testTime = test["Time Series (5min)"]; //might allow them to change this in the future, to show longer versus shorter. (must pay for shorter)
-      //var dates = Object.keys(testTime);
-      ////var headers = Object.keys(testTime[dates[0]]);
-      //// THIS WORKS, but it the chart util shows it poorly in the beginning because it's zoomed in. Maybe have weekly data?
-      //var headers: string[] = [
-      //  "open",
-      //  "high",
-      //  "low",
-      //  "close",
-      //  "volume",
-      //  "date"
-      //];
-      //let csv = Object.keys(testTime).map(
-      //  date =>
-      //    Object.keys(testTime[date])
-      //      .map(innerKey => testTime[date][innerKey])
-      //      .join(",")
-      //  //console.log(csv);
-      //
-      //  //https://stackoverflow.com/questions/14964035/how-to-export-javascript-array-info-to-csv-on-client-side
-      //  // https://stackoverflow.com/questions/8847766/how-to-convert-json-to-csv-format-and-store-in-a-variable
-      //);
-      //csv = csv.map((elem, i) => elem + "," + dates[i]);
-      //csv.unshift(headers.join(","));
-      //var csvOut = csv.join("\r\n");
-      //console.log(csvOut);
       return csvParse(csv, parseData(parseDateTime));
     })
     .then(data => {

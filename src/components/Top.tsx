@@ -6,7 +6,7 @@ import AccountBox from "@material-ui/icons/AccountBox";
 import Close from "@material-ui/icons/Close";
 import Create from "@material-ui/icons/Create";
 import InputBase from "@material-ui/core/InputBase";
-import { edit } from "../actions";
+import { edit, toggleAccountMenu } from "../actions";
 import {
   Theme,
   makeStyles,
@@ -136,7 +136,10 @@ function Top() {
         </div>
       </div>
       <div style={styleSheet_outside.toolBar}>
-        <div className={classes.toolBarItem} onClick={() => {}}>
+        <div
+          className={classes.toolBarItem}
+          onClick={() => dispatch(toggleAccountMenu())}
+        >
           <AccountBox style={styleSheet_outside.toolBarIcon} />
         </div>
         <div

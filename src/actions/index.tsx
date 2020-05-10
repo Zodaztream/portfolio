@@ -39,4 +39,9 @@ export const updateBackground = (imageUrl: string) => {
     payload: imageUrl
   };
 };
-//export const decrement
+
+export const toggleAccountMenu = () => {
+  return {
+    type: "TOGGLE_MENU"
+  };
+};
