@@ -6,6 +6,7 @@ import * as serviceWorker from "./serviceWorker";
 import { createStore, compose } from "redux";
 import allReducers from "./reducers";
 import { Provider } from "react-redux";
+import { ModalProvider } from "react-modal-hook";
 
 declare global {
   interface Window {
@@ -20,7 +21,9 @@ const store = createStore(allReducers, composeEnhancers());
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <ModalProvider>
+        <App />
+      </ModalProvider>
     </Provider>
   </React.StrictMode>,
   document.getElementById("root")

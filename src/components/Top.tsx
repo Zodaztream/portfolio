@@ -6,13 +6,16 @@ import AccountBox from "@material-ui/icons/AccountBox";
 import Close from "@material-ui/icons/Close";
 import Create from "@material-ui/icons/Create";
 import InputBase from "@material-ui/core/InputBase";
+import { useModal } from "react-modal-hook";
 import { edit, toggleAccountMenu } from "../actions";
+import AccountMenu from "./AccountMenu";
 import {
   Theme,
   makeStyles,
   fade,
   createStyles
 } from "@material-ui/core/styles";
+import { Button } from "@material-ui/core";
 
 // actually might need a local state for typing in a name an
 // takeaway, use makeStyles in conjunction with CreateStyles and then use "className" instead of "style" as prop.
@@ -114,6 +117,10 @@ const styleSheet_outside = {
 };
 
 function Top() {
+  // move this to its own AccountMenuComponent, update the redux state approprtiately
+  const [showAccountModal, hideAccountModal] = useModal(() => (
+    <AccountMenu onClose={hideAccountModal} />
+  ));
   const classes = styleSheet();
   const dispatch = useDispatch();
 
@@ -138,7 +145,11 @@ function Top() {
       <div style={styleSheet_outside.toolBar}>
         <div
           className={classes.toolBarItem}
-          onClick={() => dispatch(toggleAccountMenu())}
+          onClick={() => {
+            // guess is that onExited is only provided by material ui
+            dispatch(toggleAccountMenu());
+            showAccountModal();
+          }}
         >
           <AccountBox style={styleSheet_outside.toolBarIcon} />
         </div>
