@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -9,6 +9,8 @@ import Button from "@material-ui/core/Button";
 import { useDispatch } from "react-redux";
 import { toggleAccountMenu } from "../actions";
 import { makeStyles } from "@material-ui/core";
+import background from "../images/background.jpg";
+import { url } from "inspector";
 // take hideAccountMOdal props
 
 interface Iprops {
@@ -20,17 +22,18 @@ const useStyles = makeStyles({
     display: "flex"
   },
   divider: {
-    height: 60,
+    height: 250,
     margin: 4
   }
 });
 
 function AccountMenu(props: Iprops) {
+  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
   const dispatch = useDispatch();
   const classes = useStyles();
   return (
     <Dialog
-      className={classes.dialog}
       open={true}
       onClose={() => {
         dispatch(toggleAccountMenu());
@@ -38,53 +41,87 @@ function AccountMenu(props: Iprops) {
       }}
       onExited={() => dispatch(toggleAccountMenu())} // what does onexited do? Does the nice transition back ?
     >
-      <DialogContent>
-        <form onSubmit={() => {}} id="login-form">
-          <DialogTitle>Login</DialogTitle>
-          <DialogContent>
-            <TextField name="username" label="Username" required />
-          </DialogContent>
-          <DialogContent>
-            <TextField
-              type="password"
-              name="password"
-              label="Password"
-              required
-            />
-          </DialogContent>
-        </form>
+      <DialogContent className={classes.dialog}>
+        <div>
+          <form
+            onSubmit={event => {
+              event.preventDefault();
+            }}
+            id="login-form"
+          >
+            <DialogTitle>Login</DialogTitle>
+            <DialogContent>
+              <TextField
+                name="username"
+                label="Username"
+                required
+                onChange={event => setUsername(event.currentTarget.value)}
+              />
+            </DialogContent>
+            <DialogContent>
+              <TextField
+                type="password"
+                name="password"
+                label="Password"
+                onChange={event => setPassword(event.currentTarget.value)}
+                required
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button
+                type="submit"
+                form="login-form"
+                color="primary"
+                variant="contained"
+              >
+                Login
+              </Button>
+            </DialogActions>
+          </form>
+        </div>
+        <Divider
+          className={classes.divider}
+          variant="middle"
+          orientation="vertical"
+        />
+        <div>
+          <form
+            onSubmit={event => {
+              event.preventDefault();
+            }}
+            id="register-form"
+          >
+            <DialogTitle>Register</DialogTitle>
+            <DialogContent>
+              <TextField
+                name="username"
+                label="Username"
+                required
+                onChange={event => setUsername(event.target.value)}
+              />
+            </DialogContent>
+            <DialogContent>
+              <TextField
+                type="password"
+                name="password"
+                label="Password"
+                required
+                onChange={event => setPassword(event.target.value)}
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button
+                type="submit"
+                form="register-form"
+                color="primary"
+                variant="contained"
+              >
+                Register
+              </Button>
+            </DialogActions>
+          </form>
+        </div>
       </DialogContent>
-      <Divider
-        className={classes.divider}
-        variant="middle"
-        orientation="vertical"
-      />
-      <DialogContent>
-        <form onSubmit={() => {}} id="register-form">
-          <DialogTitle>Register</DialogTitle>
-          <DialogContent>
-            <TextField name="username" label="Username" required />
-          </DialogContent>
-        </form>
-      </DialogContent>
-      <DialogActions>
-        <Button
-          type="submit"
-          form="register-form"
-          color="primary"
-          variant="contained"
-        >
-          Register
-        </Button>
-        <Button
-          type="submit"
-          form="login-form"
-          color="primary"
-          variant="contained"
-        >
-          Login
-        </Button>
-      </DialogActions>
     </Dialog>
   );
 }

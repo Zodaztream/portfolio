@@ -3,7 +3,7 @@
  * Displays a customizable grid layout with grid elements
  */
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import {
   useSelector as useReduxSelector,
@@ -22,6 +22,13 @@ import { addElement, updateSizePos, updateBackground } from "../actions";
 import { RootState } from "../reducers";
 import { Element } from "./types";
 import BgSelector from "./BgSelector";
+import { useModal } from "react-modal-hook";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Button from "@material-ui/core/Button";
+import Divider from "@material-ui/core/Divider";
 
 const ReactGridLayout = WidthProvider(GridLayout);
 
@@ -98,6 +105,46 @@ function Main() {
   const [showbg, setShowbg] = useState(false);
   const classes = styleSheet();
   const dispatch = useDispatch();
+  const firstRun = useRef(true);
+
+  const [showSave, hideSave] = useModal(() => (
+    //perform call server -> insert DB
+    <Dialog open={true} onClose={hideSave}>
+      <DialogTitle>Save?</DialogTitle>
+      <DialogContent>
+        <Button
+          color="primary"
+          variant="contained"
+          onClick={() => {
+            //maybe do loading circle
+            hideSave();
+          }}
+          style={{ margin: 4 }}
+        >
+          Yes
+        </Button>
+        <Button
+          color="secondary"
+          variant="contained"
+          onClick={() => {
+            hideSave();
+          }}
+          style={{ margin: 4 }}
+        >
+          No
+        </Button>
+      </DialogContent>
+    </Dialog>
+  ));
+
+  useEffect(() => {
+    if (!isEdit && !firstRun.current) {
+      showSave();
+    } else if (firstRun) {
+      //Skip first run.
+      firstRun.current = false;
+    }
+  }, [isEdit]);
 
   // onResizeStop, onDragStop => dispatch to state and update state, because we get the elements from the state.
   // however, nmight cause a loop.
