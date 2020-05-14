@@ -142,6 +142,29 @@ function Main() {
       showSave();
     } else if (firstRun) {
       //Skip first run.
+      let headers = new Headers();
+      let token =
+        "eyJhbGciOiJIUzUxMiIsImlhdCI6MTU4OTQ4Mzg4NSwiZXhwIjoxNTg5NDg1MDg1fQ.eyJ1c2VybmFtZSI6IkZlbGl4In0.gsGKCSVLHWL6PrxzKEQqf5JdPpyjHVE5EDY3hbRyOVdB8Xnnq5qyaN9swEIYbrwmngJDnvmFmHSTF2TZXZ2Vdg";
+
+      headers.append("Authorization", `Basic ${btoa(`${token}:`)}`);
+      headers.append("Access-Control-Allow-Origin", "*");
+      headers.append("Access-Control-Allow-Headers", "Content-Type");
+      headers.append("Access-Control-Allow-Headers", "Authorization");
+      headers.append("Content-Type", "application/x-www-form-urlencoded");
+
+      const data = new URLSearchParams();
+      data.append("username", "Felix");
+      // need to do error handling as well, but this "template" works!
+      const PromiseData = fetch("http://localhost:5000/read_profile", {
+        method: "POST",
+        mode: "cors",
+        headers: headers,
+        body: data
+      })
+        .then(response => response.text())
+        .then(data => {
+          console.log(JSON.parse(data));
+        });
       firstRun.current = false;
     }
   }, [isEdit]);
