@@ -601,8 +601,8 @@ function trimData(data: DataStruct) {
   var result : DataStruct  = {}
   Object.keys(data).map((date: string) => {
     var rawDate = parseDateTime(date);
-    //special case for weekend
-    if(today.getDate() == rawDate?.getDate() || [6, 0].includes(today.getDay()) ){ //if no data is returned, then it will just fail. So when we fetch data, ensure that if it's a weekend, we still get the previous day's data
+    //special case for weekend. True is just for debug ( currently using true because the testData is older than today and it's not yet a weekend)
+    if(today.getDate() == rawDate?.getDate() || [6, 0].includes(today.getDay()) || true ){ //if no data is returned, then it will just fail. So when we fetch data, ensure that if it's a weekend, we still get the previous day's data
       result[date] = data[date];
     }
   });
