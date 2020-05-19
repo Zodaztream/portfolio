@@ -30,6 +30,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
 import { ParsedPath } from "path";
+import { getProfile } from "./Network";
 
 const ReactGridLayout = WidthProvider(GridLayout);
 
@@ -92,15 +93,6 @@ function generateElement(data: Element) {
   );
 }
 
-interface ResponseType {
-  success: Boolean;
-  message: string;
-  data: string;
-}
-
-interface DataArray {
-  elements: Element[];
-}
 // { elements: { [id: string]: Element }; background: string }
 // Actually, we might actually have to have local states, as when you type in someone's name. you Obviously don't want old data.
 // but at least I learned something new :)
@@ -152,48 +144,15 @@ function Main() {
     if (!isEdit && !firstRun.current) {
       showSave();
     } else if (firstRun) {
-      //Skip first run.
-      let headers = new Headers();
-      let token =
-        "eyJhbGciOiJIUzUxMiIsImlhdCI6MTU4OTU3NTQzMywiZXhwIjoxNTg5NTc3ODMzfQ.eyJ1c2VybmFtZSI6IkZlbGl4In0.mruwk_ZofiEU79218Hvzrc9a8NWXIEfPMLxRpQ989T0cMUwB7vCeY7Kw6hw6Sb4_wSqMtOueNMmOKf7VNrsonA";
-
-      headers.append("Authorization", `Basic ${btoa(`${token}:`)}`);
-      headers.append("Access-Control-Allow-Origin", "*");
-      headers.append("Access-Control-Allow-Headers", "Content-Type");
-      headers.append("Access-Control-Allow-Headers", "Authorization");
-      headers.append("Content-Type", "application/x-www-form-urlencoded");
-
-      const data = new URLSearchParams();
-      data.append("username", "Felix");
-      // need to do error handling as well, but this "template" works!
-      /** { "elements":  [{"i": "_64.3", "x": 2, "y": 3, "w": 2, "h":7, "chart": ""},  {"i": "_69", "x": 2, "y": 3, "w":5, "h":3, "chart": "MSFT"}], "background": "image.jpg"}
-       * should look like this!
-       */
-      const PromiseData = fetch("http://localhost:5000/read_profile", {
-        method: "POST",
-        mode: "cors",
-        headers: headers,
-        body: data
-      })
-        .then(response => response.text())
-        .then(responseData => {
-          console.log("Here!");
-          //console.log(JSON.parse(responseData));
-          let parsed: ResponseType = JSON.parse(responseData);
-          const { message, success, data } = parsed;
-          //const { elements } = JSON.parse(test);
-          //console.log(elements);
-          return data;
-        })
-        .then(data => {
-          const { elements }: DataArray = JSON.parse(data);
+      //On first run.
+      getProfile("").then(elements => {
+        if (elements) {
           elements.map((obj: Element) => {
             dispatch(addElement(obj));
           });
-        })
-        .catch(() => {
-          console.log("Failed fetching, error");
-        });
+        }
+      });
+
       firstRun.current = false;
     }
   }, [isEdit]);

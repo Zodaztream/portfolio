@@ -1,4 +1,4 @@
-import React, { CSSProperties } from "react";
+import React, { CSSProperties, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { findByLabelText } from "@testing-library/dom";
 import SearchIcon from "@material-ui/icons/Search";
@@ -16,6 +16,10 @@ import {
   createStyles
 } from "@material-ui/core/styles";
 import { Button } from "@material-ui/core";
+import { handleLogout, handleSearch, getProfile } from "./Network";
+import { Element } from "./types";
+import { addElement } from "../actions";
+import IconButton from "@material-ui/core/IconButton";
 
 // actually might need a local state for typing in a name an
 // takeaway, use makeStyles in conjunction with CreateStyles and then use "className" instead of "style" as prop.
@@ -121,6 +125,7 @@ function Top() {
   const [showAccountModal, hideAccountModal] = useModal(() => (
     <AccountMenu onClose={hideAccountModal} />
   ));
+  const [search, setSearch] = useState("");
   const classes = styleSheet();
   const dispatch = useDispatch();
 
@@ -128,9 +133,19 @@ function Top() {
     <div style={styleSheet_outside.mainContainer}>
       <div style={styleSheet_outside.searchBar}>
         <div className={classes.search}>
-          <div className={classes.searchIcon}>
+          <IconButton
+            onClick={() => {
+              getProfile(search).then(elements => {
+                if (elements) {
+                  elements.map((obj: Element) => {
+                    dispatch(addElement(obj));
+                  });
+                }
+              });
+            }}
+          >
             <SearchIcon />
-          </div>
+          </IconButton>
           <InputBase
             classes={{
               root: classes.inputRoot,
@@ -138,6 +153,7 @@ function Top() {
             }}
             placeholder="Search..."
             inputProps={{ "aria-label": "search" }}
+            onChange={event => setSearch(event.currentTarget.value)}
             //onChange, set the local state
           />
         </div>
@@ -161,7 +177,7 @@ function Top() {
         >
           <Create style={styleSheet_outside.toolBarIcon} />
         </div>
-        <div className={classes.toolBarItem} onClick={() => {}}>
+        <div className={classes.toolBarItem} onClick={() => handleLogout()}>
           <Close style={styleSheet_outside.toolBarIcon} />
         </div>
       </div>

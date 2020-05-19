@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -11,6 +11,12 @@ import { toggleAccountMenu } from "../actions";
 import { makeStyles } from "@material-ui/core";
 import background from "../images/background.jpg";
 import { url } from "inspector";
+import { handleLogin } from "./Network";
+import { green, red } from "@material-ui/core/colors";
+import Fab from "@material-ui/core/Fab";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import clsx from "clsx";
+
 // take hideAccountMOdal props
 
 interface Iprops {
@@ -24,14 +30,53 @@ const useStyles = makeStyles({
   divider: {
     height: 250,
     margin: 4
+  },
+  buttonSuccess: {
+    backgroundColor: green[500],
+    "&:hover": {
+      backgroundColor: green[700]
+    }
+  },
+  buttonUnSuccess: {
+    backgroundColor: red[500],
+    "&:hover": {
+      backgroundColor: red[700]
+    }
+  },
+  buttonDefault: {},
+
+  buttonProgress: {
+    color: green[500],
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    marginTop: -12,
+    marginLeft: -12
   }
 });
 
 function AccountMenu(props: Iprops) {
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [hasLoaded, setHasLoaded] = useState(false);
   const dispatch = useDispatch();
   const classes = useStyles();
+  const timer = React.useRef<number>();
+
+  const buttonClassname = clsx({
+    [classes.buttonSuccess]: success,
+    [classes.buttonDefault]: !hasLoaded,
+    [classes.buttonUnSuccess]: !success && hasLoaded
+  });
+
+  useEffect(() => {
+    return () => {
+      clearTimeout(timer.current);
+    };
+  }, []);
+
   return (
     <Dialog
       open={true}
@@ -73,8 +118,36 @@ function AccountMenu(props: Iprops) {
                 form="login-form"
                 color="primary"
                 variant="contained"
+                className={buttonClassname}
+                disabled={loading}
+                onClick={() => {
+                  if (!loading) {
+                    setSuccess(false);
+                    setLoading(true);
+                    setHasLoaded(true);
+
+                    if (username && password) {
+                      handleLogin(username, password).then(promiseSuccess => {
+                        setSuccess(promiseSuccess);
+                        setLoading(false);
+                        if (promiseSuccess) {
+                          timer.current = window.setTimeout(() => {
+                            dispatch(toggleAccountMenu());
+                            props.onClose();
+                          }, 1000);
+                        }
+                      }); //set error message or somethin
+                    }
+                  }
+                }}
               >
                 Login
+                {loading && (
+                  <CircularProgress
+                    size={24}
+                    className={classes.buttonProgress}
+                  />
+                )}
               </Button>
             </DialogActions>
           </form>
