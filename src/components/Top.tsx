@@ -1,5 +1,9 @@
 import React, { CSSProperties, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import {
+  useSelector as useReduxSelector,
+  useDispatch,
+  TypedUseSelectorHook
+} from "react-redux";
 import { findByLabelText } from "@testing-library/dom";
 import SearchIcon from "@material-ui/icons/Search";
 import AccountBox from "@material-ui/icons/AccountBox";
@@ -18,8 +22,12 @@ import {
 import { Button } from "@material-ui/core";
 import { handleLogout, handleSearch, getProfile } from "./Network";
 import { Element } from "./types";
-import { addElement } from "../actions";
+import { addElement, setSearching } from "../actions";
 import IconButton from "@material-ui/core/IconButton";
+import { RootState } from "../reducers";
+import clsx from "clsx";
+
+const useSelector: TypedUseSelectorHook<RootState> = useReduxSelector;
 
 // actually might need a local state for typing in a name an
 // takeaway, use makeStyles in conjunction with CreateStyles and then use "className" instead of "style" as prop.
@@ -68,7 +76,7 @@ const styleSheet = makeStyles((theme: Theme) =>
       }
     },
 
-    toolBarItem: {
+    toolBarEnabled: {
       display: "flex",
       flex: "1",
       width: "100%",
@@ -83,6 +91,23 @@ const styleSheet = makeStyles((theme: Theme) =>
         backgroundColor: fade(theme.palette.common.white, 0.25),
         opacity: 1
       }
+    },
+    toolBarDisabled: {
+      display: "flex",
+      flex: "1",
+      width: "100%",
+      height: "100%",
+      justifyContent: "flexEnd",
+      alignItems: "center" as "center",
+      opacity: 0.5,
+      background: "#800000"
+    },
+    toolBarIcon: {
+      display: "flex",
+      flex: "1",
+      fill: "white",
+      height: "75%",
+      width: "20%"
     }
   })
 );
@@ -126,8 +151,14 @@ function Top() {
     <AccountMenu onClose={hideAccountModal} />
   ));
   const [search, setSearch] = useState("");
+  const isSearching = useSelector(state => state.isSearching);
   const classes = styleSheet();
   const dispatch = useDispatch();
+
+  const buttonClassname = clsx({
+    [classes.toolBarEnabled]: !isSearching,
+    [classes.toolBarDisabled]: isSearching
+  });
 
   return (
     <div style={styleSheet_outside.mainContainer}>
@@ -135,6 +166,7 @@ function Top() {
         <div className={classes.search}>
           <IconButton
             onClick={() => {
+              dispatch(setSearching(true));
               getProfile(search).then(elements => {
                 if (elements) {
                   elements.map((obj: Element) => {
@@ -160,9 +192,11 @@ function Top() {
       </div>
       <div style={styleSheet_outside.toolBar}>
         <div
-          className={classes.toolBarItem}
+          className={classes.toolBarEnabled}
           onClick={() => {
             // guess is that onExited is only provided by material ui
+            // maybe have a check here for if we're logged in (maybe "ping" the server, and have the server return "true" if logged in)
+            // if we're logged in, then don't show the below, just go back home, could do that by passing some element which resets Main.tsx
             dispatch(toggleAccountMenu());
             showAccountModal();
           }}
@@ -170,14 +204,14 @@ function Top() {
           <AccountBox style={styleSheet_outside.toolBarIcon} />
         </div>
         <div
-          className={classes.toolBarItem}
+          className={buttonClassname}
           onClick={() => {
-            dispatch(edit());
+            if (!isSearching) dispatch(edit());
           }}
         >
           <Create style={styleSheet_outside.toolBarIcon} />
         </div>
-        <div className={classes.toolBarItem} onClick={() => handleLogout()}>
+        <div className={classes.toolBarEnabled} onClick={() => handleLogout()}>
           <Close style={styleSheet_outside.toolBarIcon} />
         </div>
       </div>

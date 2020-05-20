@@ -12,6 +12,13 @@ export const edit = () => {
   };
 };
 
+export const setSearching = (isSearching: boolean) => {
+  return {
+    type: "SET_SEARCHING",
+    payload: isSearching
+  };
+};
+
 export const addElement = (gridCell: Element) => {
   return {
     type: "ADD_ELEMENT",

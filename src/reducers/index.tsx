@@ -5,13 +5,15 @@ import editReducer from "./edit";
 import gridReducer from "./gridElement";
 import backgroundImageReducer from "./backgroundImage";
 import toggleAccountMenuReducer from "./toggleAccountMenu";
+import searchReducer from "./search";
 
 const allReducers = combineReducers({
   counter: counterReducer,
   edit: editReducer,
   elements: gridReducer,
   backgroundImage: backgroundImageReducer,
-  toggleAccountMenu: toggleAccountMenuReducer
+  toggleAccountMenu: toggleAccountMenuReducer,
+  isSearching: searchReducer
 });
 
 export type RootState = ReturnType<typeof allReducers>;

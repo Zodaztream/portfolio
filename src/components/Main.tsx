@@ -97,6 +97,7 @@ function generateElement(data: Element) {
 // Actually, we might actually have to have local states, as when you type in someone's name. you Obviously don't want old data.
 // but at least I learned something new :)
 //Move out "isEdit" too its own "toolbar" return function
+// NEED TO BE ABLE TO REMOVE ELEMENTS TOO!!
 
 /**
  * @description Displays react grid layout and its grid components
@@ -104,6 +105,7 @@ function generateElement(data: Element) {
  */
 function Main() {
   const isEdit = useSelector(state => state.edit);
+  const isSearching = useSelector(state => state.isSearching);
   const elements = useSelector(state => state.elements.elements);
   const background = useSelector(state => state.backgroundImage);
   const [showbg, setShowbg] = useState(false);
