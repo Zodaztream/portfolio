@@ -20,7 +20,7 @@ import AddPhotoAlternate from "@material-ui/icons/AddPhotoAlternate";
 import { createStyles, makeStyles, Theme } from "@material-ui/core";
 import { addElement, updateSizePos, updateBackground } from "../actions";
 import { RootState } from "../reducers";
-import { Element } from "./types";
+import { Element, DataArray } from "./types";
 import BgSelector from "./BgSelector";
 import { useModal } from "react-modal-hook";
 import Dialog from "@material-ui/core/Dialog";
@@ -30,7 +30,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
 import { ParsedPath } from "path";
-import { getProfile } from "./Network";
+import { getProfile, handleProfileUpdate } from "./Network";
 
 const ReactGridLayout = WidthProvider(GridLayout);
 
@@ -105,51 +105,57 @@ function generateElement(data: Element) {
 function Main() {
   const isEdit = useSelector(state => state.edit);
   const elements = useSelector(state => state.elements.elements);
+  const background = useSelector(state => state.backgroundImage);
   const [showbg, setShowbg] = useState(false);
   const classes = styleSheet();
   const dispatch = useDispatch();
   const firstRun = useRef(true);
 
-  const [showSave, hideSave] = useModal(() => (
-    //perform call server -> insert DB
-    <Dialog open={true} onClose={hideSave}>
-      <DialogTitle>Save?</DialogTitle>
-      <DialogContent>
-        <Button
-          color="primary"
-          variant="contained"
-          onClick={() => {
-            //maybe do loading circle
-            hideSave();
-          }}
-          style={{ margin: 4 }}
-        >
-          Yes
-        </Button>
-        <Button
-          color="secondary"
-          variant="contained"
-          onClick={() => {
-            hideSave();
-          }}
-          style={{ margin: 4 }}
-        >
-          No
-        </Button>
-      </DialogContent>
-    </Dialog>
-  ));
+  const [showSave, hideSave] = useModal(
+    () => (
+      //perform call server -> insert DB
+      <Dialog open={true} onClose={hideSave}>
+        <DialogTitle>Save?</DialogTitle>
+        <DialogContent>
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={() => {
+              //maybe do loading circle
+              handleProfileUpdate(elements, background);
+              hideSave();
+            }}
+            style={{ margin: 4 }}
+          >
+            Yes
+          </Button>
+          <Button
+            color="secondary"
+            variant="contained"
+            onClick={() => {
+              hideSave();
+            }}
+            style={{ margin: 4 }}
+          >
+            No
+          </Button>
+        </DialogContent>
+      </Dialog>
+    ),
+    [elements, background]
+  );
 
   useEffect(() => {
     if (!isEdit && !firstRun.current) {
       showSave();
     } else if (firstRun) {
       //On first run.
-      getProfile("").then(elements => {
-        if (elements) {
-          elements.map((obj: Element) => {
+      getProfile("").then((data: DataArray) => {
+        if (data) {
+          data.elements.map((obj: Element) => {
             dispatch(addElement(obj));
           });
+          dispatch(updateBackground(data.background));
         }
       });
 

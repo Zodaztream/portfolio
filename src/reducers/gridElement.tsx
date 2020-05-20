@@ -2,13 +2,7 @@ import { Reducer } from "redux";
 import { Element } from "../components/types";
 import { access } from "fs";
 import update from "immutability-helper";
-import { element } from "prop-types";
-
-interface ElementState {
-  elements: {
-    [key: string]: Element;
-  };
-}
+import { ElementState } from "../components/types";
 
 interface ActionType {
   type: string;

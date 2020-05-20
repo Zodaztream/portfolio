@@ -1,8 +1,9 @@
 /**   This file handles the connection to the server */
 
 import { useDispatch } from "react-redux";
-import { Element, DataArray, ResponseType } from "./types";
+import { Element, DataArray, ResponseType, Elements } from "./types";
 import { addElement } from "../actions";
+import { element } from "prop-types";
 
 var base_url: string = "http://localhost:5000/";
 
@@ -63,6 +64,57 @@ export const handleLogout = () => {
   localStorage.removeItem("token");
 };
 
+export const handleProfileUpdate = (
+  elements: Elements,
+  backgroundImage: string
+) => {
+  let headers = new Headers();
+  let token = localStorage.getItem("token");
+
+  // Data builder
+  let elementArray: Element[] = [];
+  Object.values(elements).map(item => {
+    elementArray.push(item);
+  });
+  let dataBuilder = { elements: elementArray, background: backgroundImage };
+  //
+
+  headers.append("Authorization", `Basic ${btoa(`${token}:`)}`);
+  headers.append("Access-Control-Allow-Origin", "*");
+  headers.append("Access-Control-Allow-Headers", "Content-Type");
+  headers.append("Access-Control-Allow-Headers", "Authorization");
+  headers.append("Content-Type", "application/x-www-form-urlencoded");
+
+  const data = new URLSearchParams();
+  data.append("data", JSON.stringify(dataBuilder));
+
+  // need to do error handling as well, but this "template" works!
+  /** { "elements":  [{"i": "_64.3", "x": 2, "y": 3, "w": 2, "h":7, "chart": ""},  {"i": "_69", "x": 2, "y": 3, "w":5, "h":3, "chart": "MSFT"}], "background": "image.jpg"}
+   * should look like this!
+   */
+
+  const PromiseProfile = fetch(base_url + "update_profile", {
+    method: "POST",
+    mode: "cors",
+    headers: headers,
+    body: data
+  })
+    .then(response => response.text())
+    .then(responseData => {
+      console.log("Here!");
+      let parsed: ResponseType = JSON.parse(responseData);
+      const { message, success } = parsed;
+      if (!success) {
+        console.log(message);
+      }
+      return data;
+    })
+    .catch(() => {
+      console.log("Failed fetching, error");
+    });
+  return PromiseProfile;
+};
+
 export const getProfile = (username: string) => {
   let headers = new Headers();
   let token = localStorage.getItem("token");
@@ -96,8 +148,8 @@ export const getProfile = (username: string) => {
       return data;
     })
     .then(data => {
-      const { elements }: DataArray = JSON.parse(data);
-      return elements;
+      //const { elements }: DataArray = JSON.parse(data);
+      return JSON.parse(data);
     })
     .catch(() => {
       console.log("Failed fetching, error");

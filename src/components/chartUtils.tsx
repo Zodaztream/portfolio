@@ -629,7 +629,13 @@ function convertJsonToCsv(data: string) {
 }
 
 export function getData(tag: string) {
-  // take the tag as argument and is  IUDORZ4BGIONCWPR , https://www.alphavantage.co/documentation/ Only allowed 5 calls a minute with a total of 500 calls a day.
+  // take the tag as argument and is  IUDORZ4BGIONCWPR , https://www.alphavantage.co/documentation/ Only allowed 5 calls a minute
+  /** If fetch fails from vantage api, or if there's some return string that tells us that 5  calls has been exceeded, then
+   *  we shall just loop with progressBar until fetch returns proper. Maybe fetch will just wait for the call
+   *  If not, then we'll make another attempt after 1 minute. So we might have to show progress bar for 1 minute,
+   *  if progressbar exceeds maybe 15 seconds, we'll show a message alongside the progresscircle,
+   *  "Waiting for API-calls to replenish..."  and maybe have the . -> .. -> ... -> . etc
+   */
   const promiseIntraDayContinuous = fetch(
     //`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${tag}&interval=5min&apikey=IUDORZ4BGIONCWPR`
     "https://cdn.rawgit.com/rrag/react-stockcharts/master/docs/data/bitfinex_xbtusd_1m.csv"
