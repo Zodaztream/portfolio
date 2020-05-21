@@ -39,6 +39,32 @@ export const handleLogin = (username: string, password: string) => {
   return PromiseLogin;
 };
 
+export const handleRegister = (username: string, password: string) => {
+  let headers = new Headers();
+  headers.append("Access-Control-Allow-Origin", "*");
+  headers.append("Access-Control-Allow-Headers", "Content-Type");
+  headers.append("Access-Control-Allow-Headers", "Authorization");
+  headers.append("Content-Type", "application/x-www-form-urlencoded");
+
+  const params = new URLSearchParams();
+  params.append("username", username);
+  params.append("password", password);
+  const PromiseRegister = fetch(base_url + "register", {
+    method: "POST",
+    mode: "cors",
+    headers: headers,
+    body: params
+  })
+    .then(response => response.text())
+    .then(responseData => {
+      console.log("trying to login");
+      let parsed: ResponseType = JSON.parse(responseData);
+      const { message, success } = parsed;
+      return success;
+    });
+  return PromiseRegister;
+};
+
 export const handleLogout = () => {
   let headers = new Headers();
   let token = localStorage.getItem("token");
@@ -155,6 +181,34 @@ export const getProfile = (username: string) => {
       console.log("Failed fetching, error");
     });
   return PromiseProfile;
+};
+
+export const handlePing = () => {
+  let headers = new Headers();
+  let token = localStorage.getItem("token");
+
+  headers.append("Authorization", `Basic ${btoa(`${token}:`)}`);
+  headers.append("Access-Control-Allow-Origin", "*");
+  headers.append("Access-Control-Allow-Headers", "Content-Type");
+  headers.append("Access-Control-Allow-Headers", "Authorization");
+  headers.append("Content-Type", "application/x-www-form-urlencoded");
+
+  const PromisePong = fetch(base_url + "ping", {
+    method: "GET",
+    mode: "cors",
+    headers: headers
+  })
+    .then(response => response.text())
+    .then(responseData => {
+      let parsed: ResponseType = JSON.parse(responseData);
+      const { message, success } = parsed;
+
+      return success;
+    })
+    .catch(() => {
+      console.log("Failed fetching, error");
+    });
+  return PromisePong;
 };
 
 export const handleSearch = (username: string) => {

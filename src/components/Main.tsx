@@ -150,7 +150,7 @@ function Main() {
   useEffect(() => {
     if (!isEdit && !firstRun.current) {
       showSave();
-    } else if (firstRun) {
+    } else if (firstRun || !isSearching) {
       //On first run.
       getProfile("").then((data: DataArray) => {
         if (data) {
@@ -163,7 +163,7 @@ function Main() {
 
       firstRun.current = false;
     }
-  }, [isEdit]);
+  }, [isEdit, isSearching]);
 
   // onResizeStop, onDragStop => dispatch to state and update state, because we get the elements from the state.
   // however, nmight cause a loop.

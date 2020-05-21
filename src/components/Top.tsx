@@ -20,9 +20,9 @@ import {
   createStyles
 } from "@material-ui/core/styles";
 import { Button } from "@material-ui/core";
-import { handleLogout, handleSearch, getProfile } from "./Network";
-import { Element } from "./types";
-import { addElement, setSearching } from "../actions";
+import { handleLogout, getProfile, handlePing } from "./Network";
+import { Element, DataArray } from "./types";
+import { addElement, setSearching, updateBackground } from "../actions";
 import IconButton from "@material-ui/core/IconButton";
 import { RootState } from "../reducers";
 import clsx from "clsx";
@@ -38,7 +38,7 @@ const styleSheet = makeStyles((theme: Theme) =>
       padding: theme.spacing(0, 2),
       height: "100%",
       position: "absolute" as "absolute",
-      pointerEvents: "none" as "none",
+      zIndex: 9999,
       display: "flex",
       alignItems: "center" as "center",
       justifyContent: "center" as "center"
@@ -81,6 +81,7 @@ const styleSheet = makeStyles((theme: Theme) =>
       flex: "1",
       width: "100%",
       height: "100%",
+      position: "relative",
       justifyContent: "flexEnd",
       alignItems: "center" as "center",
       opacity: 0.5,
@@ -94,6 +95,7 @@ const styleSheet = makeStyles((theme: Theme) =>
     },
     toolBarDisabled: {
       display: "flex",
+      position: "relative",
       flex: "1",
       width: "100%",
       height: "100%",
@@ -142,6 +144,15 @@ const styleSheet_outside = {
     fill: "white",
     height: "75%",
     width: "20%"
+  },
+
+  toolBarIconPrevent: {
+    display: "flex",
+    position: "absolute" as "absolute",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 9999,
+    flex: "1"
   }
 };
 
@@ -165,13 +176,15 @@ function Top() {
       <div style={styleSheet_outside.searchBar}>
         <div className={classes.search}>
           <IconButton
+            className={classes.searchIcon}
             onClick={() => {
               dispatch(setSearching(true));
-              getProfile(search).then(elements => {
-                if (elements) {
-                  elements.map((obj: Element) => {
+              getProfile(search).then((data: DataArray) => {
+                if (data) {
+                  data.elements.map((obj: Element) => {
                     dispatch(addElement(obj));
                   });
+                  dispatch(updateBackground(data.background));
                 }
               });
             }}
@@ -194,11 +207,17 @@ function Top() {
         <div
           className={classes.toolBarEnabled}
           onClick={() => {
-            // guess is that onExited is only provided by material ui
             // maybe have a check here for if we're logged in (maybe "ping" the server, and have the server return "true" if logged in)
             // if we're logged in, then don't show the below, just go back home, could do that by passing some element which resets Main.tsx
-            dispatch(toggleAccountMenu());
-            showAccountModal();
+            handlePing().then(success => {
+              if (success) {
+                //if we're logged in, also, one could perhaps send a websocket message instead, just ensure to have @auth.login_required ? we'll see
+                dispatch(setSearching(false));
+              } else {
+                dispatch(toggleAccountMenu());
+                showAccountModal();
+              }
+            });
           }}
         >
           <AccountBox style={styleSheet_outside.toolBarIcon} />
@@ -210,6 +229,13 @@ function Top() {
           }}
         >
           <Create style={styleSheet_outside.toolBarIcon} />
+          {isSearching ? (
+            <div style={styleSheet_outside.toolBarIconPrevent}>
+              <Close style={{ width: "100%", height: "100%" }}></Close>
+            </div>
+          ) : (
+            ""
+          )}
         </div>
         <div className={classes.toolBarEnabled} onClick={() => handleLogout()}>
           <Close style={styleSheet_outside.toolBarIcon} />

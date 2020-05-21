@@ -11,7 +11,7 @@ import { toggleAccountMenu } from "../actions";
 import { makeStyles } from "@material-ui/core";
 import background from "../images/background.jpg";
 import { url } from "inspector";
-import { handleLogin } from "./Network";
+import { handleLogin, handleRegister } from "./Network";
 import { green, red } from "@material-ui/core/colors";
 import Fab from "@material-ui/core/Fab";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -185,11 +185,35 @@ function AccountMenu(props: Iprops) {
             <DialogActions>
               <Button
                 type="submit"
-                form="register-form"
+                form="login-form"
                 color="primary"
                 variant="contained"
+                className={buttonClassname}
+                disabled={loading}
+                onClick={() => {
+                  if (!loading) {
+                    setSuccess(false);
+                    setLoading(true);
+                    setHasLoaded(true);
+
+                    if (username && password) {
+                      handleRegister(username, password).then(
+                        promiseSuccess => {
+                          setSuccess(promiseSuccess);
+                          setLoading(false);
+                        }
+                      ); //set error message or somethin
+                    }
+                  }
+                }}
               >
                 Register
+                {loading && (
+                  <CircularProgress
+                    size={24}
+                    className={classes.buttonProgress}
+                  />
+                )}
               </Button>
             </DialogActions>
           </form>
