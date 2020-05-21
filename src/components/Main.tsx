@@ -216,7 +216,7 @@ function Main() {
           <div
             key="EDIT_BG"
             className={classes.toolBarItem}
-            onClick={() => setShowbg(true)} //Dispatch for now, but will open up a separate menu in which we paste the link
+            onClick={() => setShowbg(true)}
             data-grid={{ x: 0, y: 1, w: 0, h: 0, static: true }}
           >
             <AddPhotoAlternate

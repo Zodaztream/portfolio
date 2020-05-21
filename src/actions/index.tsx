@@ -26,9 +26,16 @@ export const addElement = (gridCell: Element) => {
   };
 };
 
+export const removeElement = (gridCell: Element) => {
+  return {
+    type: "REMOVE_ELEMENT",
+    payload: gridCell
+  };
+};
+
 export const updateElement = (gridCell: Element) => {
   return {
-    type: "UPDATE_ELEMENT", // ideally, should be enum types instead of strings (for safety)
+    type: "UPDATE_ELEMENT",
     payload: gridCell
   };
 };

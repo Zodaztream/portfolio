@@ -6,20 +6,24 @@
 import React, { useEffect, useState, ReactChild } from "react";
 //import { useSelector, useDispatch } from "react-redux";
 import ControlPoint from "@material-ui/icons/ControlPoint";
-// @ts-ignore
+import Clear from "@material-ui/icons/Clear";
+import IconButton from "@material-ui/core/IconButton";
 import { Element } from "./types";
-import { useDispatch } from "react-redux";
-import { RootState } from "../reducers";
-import { updateElement } from "../actions";
+import {
+  useDispatch,
+  useSelector as useReduxSelector,
+  TypedUseSelectorHook
+} from "react-redux";
+import { updateElement, removeElement } from "../actions";
 import Chart from "./Chart";
 import { getData } from "./chartUtils";
-// @ts-ignore
 //https://medium.com/@vitalyb/dont-let-typescript-slow-you-down-92d394ec8c9f
 import { Theme, withStyles, createStyles } from "@material-ui/core/styles";
 import { DSVParsedArray } from "d3-dsv";
 import StockPicker from "./StockPicker";
+import { RootState } from "../reducers";
 
-//Alpha Vantage API for stockchart data. 5 minute interval:  IUDORZ4BGIONCWPR , https://www.alphavantage.co/documentation/ (information how to calln)
+const useSelector: TypedUseSelectorHook<RootState> = useReduxSelector;
 
 const styleSheet = (theme: Theme) =>
   createStyles({
@@ -67,6 +71,7 @@ function Stockchart(props: IProps) {
   const [chart, setChart] = useState<IData | undefined>(undefined);
   const [update, setUpdate] = useState(false);
   const dispatch = useDispatch();
+  const isEdit = useSelector(state => state.edit);
 
   // implement a function which perform "setChoose"
   //
@@ -89,6 +94,21 @@ function Stockchart(props: IProps) {
   //We ensure Typescript that chart will have data with "!"
   return (
     <div style={{ height: "100%", width: "100%" }}>
+      {isEdit ? (
+        <IconButton
+          style={{
+            display: "flex",
+            position: "absolute",
+            zIndex: 9999
+          }}
+          onClick={() => dispatch(removeElement(props.grid))}
+        >
+          <Clear></Clear>
+        </IconButton>
+      ) : (
+        ""
+      )}
+
       {chart ? (
         <div
           style={{

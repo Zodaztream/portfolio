@@ -9,6 +9,10 @@ interface ActionType {
   payload: Element;
 }
 
+interface innerElement {
+  [key: string]: Element;
+}
+
 //export interfaces instead of copying it to all (separate types file, probably index.types or something for easier import): https://redux.js.org/recipes/usage-with-typescript
 
 const initialUserState: ElementState = {
@@ -26,7 +30,15 @@ const gridReducer = (
         elements: { ...state.elements, [action.payload.i]: action.payload }
       };
     case "REMOVE_ELEMENT":
-      return state;
+      return update(state, {
+        elements: {
+          $apply: function(obj: innerElement) {
+            var copy = Object.assign({}, obj);
+            delete copy[action.payload.i];
+            return copy;
+          }
+        }
+      });
     case "UPDATE_ELEMENT": // change this to UPDATE_CHART or something
       return update(state, {
         elements: {
