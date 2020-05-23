@@ -88,6 +88,8 @@ export const handleLogout = () => {
       return success;
     });
   localStorage.removeItem("token");
+
+  return PromiseLogout;
 };
 
 export const handleProfileUpdate = (

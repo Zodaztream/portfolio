@@ -7,15 +7,16 @@ import TextField from "@material-ui/core/TextField";
 import Divider from "@material-ui/core/Divider";
 import Button from "@material-ui/core/Button";
 import { useDispatch } from "react-redux";
-import { toggleAccountMenu } from "../actions";
+import { toggleAccountMenu, updateBackground, addElement } from "../actions";
 import { makeStyles } from "@material-ui/core";
 import background from "../images/background.jpg";
 import { url } from "inspector";
-import { handleLogin, handleRegister } from "./Network";
+import { handleLogin, handleRegister, getProfile } from "./Network";
 import { green, red } from "@material-ui/core/colors";
 import Fab from "@material-ui/core/Fab";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import clsx from "clsx";
+import { DataArray, Element } from "./types";
 
 // take hideAccountMOdal props
 
@@ -131,6 +132,14 @@ function AccountMenu(props: Iprops) {
                         setSuccess(promiseSuccess);
                         setLoading(false);
                         if (promiseSuccess) {
+                          getProfile("").then((data: DataArray) => {
+                            if (data) {
+                              data.elements.map((obj: Element) => {
+                                dispatch(addElement(obj));
+                              });
+                              dispatch(updateBackground(data.background));
+                            }
+                          });
                           timer.current = window.setTimeout(() => {
                             dispatch(toggleAccountMenu());
                             props.onClose();

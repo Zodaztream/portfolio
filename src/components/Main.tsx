@@ -120,7 +120,6 @@ function Main() {
 
   const [showSave, hideSave] = useModal(
     () => (
-      //perform call server -> insert DB
       <Dialog open={true} onClose={hideSave}>
         <DialogTitle>Save?</DialogTitle>
         <DialogContent>
@@ -152,6 +151,7 @@ function Main() {
     [elements, background]
   );
 
+  // Fetches the profile data from the server/DB and applies it.
   const showProfile = () => {
     getProfile("").then((data: DataArray) => {
       if (data) {
@@ -165,6 +165,7 @@ function Main() {
 
   //This takes care off what should happen post editting
   useEffect(() => {
+    //Must check that is not the first run, otherwise, this will fire.
     if (!isEdit && !firstRun.current) {
       showSave();
     }
@@ -176,11 +177,9 @@ function Main() {
     firstRun.current = false;
   }, []);
 
-  // This takes care of what should happen when we're no longer searching (i.e returned home)
+  // This takes care of what should happen when we're no longer searching (i.e returned home) and on page refresh.
   useEffect(() => {
     if (!isSearching) {
-      //On first run.
-      console.log(isSearching); // firstRun is reset probably.
       dispatch(clearAllElements()); //empty the state
       showProfile();
     }

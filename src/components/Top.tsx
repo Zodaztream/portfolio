@@ -177,14 +177,21 @@ function Top() {
           <IconButton
             className={classes.searchIcon}
             onClick={() => {
-              dispatch(setSearching(true));
-              dispatch(clearAllElements());
-              getProfile(search).then((data: DataArray) => {
-                if (data) {
-                  data.elements.map((obj: Element) => {
-                    dispatch(addElement(obj));
+              handlePing().then(success => {
+                if (success) {
+                  dispatch(setSearching(true));
+                  dispatch(clearAllElements());
+                  getProfile(search).then((data: DataArray) => {
+                    if (data) {
+                      data.elements.map((obj: Element) => {
+                        dispatch(addElement(obj));
+                      });
+                      dispatch(updateBackground(data.background));
+                    }
                   });
-                  dispatch(updateBackground(data.background));
+                } else {
+                  dispatch(toggleAccountMenu());
+                  showAccountModal();
                 }
               });
             }}
@@ -237,7 +244,14 @@ function Top() {
             ""
           )}
         </div>
-        <div className={classes.toolBarEnabled} onClick={() => handleLogout()}>
+        <div
+          className={classes.toolBarEnabled}
+          onClick={() =>
+            handleLogout().then(() => {
+              dispatch(clearAllElements());
+            })
+          }
+        >
           <Close style={styleSheet_outside.toolBarIcon} />
         </div>
       </div>
