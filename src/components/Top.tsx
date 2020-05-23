@@ -11,7 +11,7 @@ import Close from "@material-ui/icons/Close";
 import Create from "@material-ui/icons/Create";
 import InputBase from "@material-ui/core/InputBase";
 import { useModal } from "react-modal-hook";
-import { edit, toggleAccountMenu } from "../actions";
+import { edit, toggleAccountMenu, clearAllElements } from "../actions";
 import AccountMenu from "./AccountMenu";
 import {
   Theme,
@@ -157,7 +157,6 @@ const styleSheet_outside = {
 };
 
 function Top() {
-  // move this to its own AccountMenuComponent, update the redux state approprtiately
   const [showAccountModal, hideAccountModal] = useModal(() => (
     <AccountMenu onClose={hideAccountModal} />
   ));
@@ -179,6 +178,7 @@ function Top() {
             className={classes.searchIcon}
             onClick={() => {
               dispatch(setSearching(true));
+              dispatch(clearAllElements());
               getProfile(search).then((data: DataArray) => {
                 if (data) {
                   data.elements.map((obj: Element) => {

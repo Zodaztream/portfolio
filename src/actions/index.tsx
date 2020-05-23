@@ -33,6 +33,13 @@ export const removeElement = (gridCell: Element) => {
   };
 };
 
+export const clearAllElements = () => {
+  return {
+    type: "CLEAR_ALL",
+    payload: null
+  };
+};
+
 export const updateElement = (gridCell: Element) => {
   return {
     type: "UPDATE_ELEMENT",

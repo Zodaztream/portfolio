@@ -18,7 +18,12 @@ import "./Main.css";
 import Add from "@material-ui/icons/Add";
 import AddPhotoAlternate from "@material-ui/icons/AddPhotoAlternate";
 import { createStyles, makeStyles, Theme } from "@material-ui/core";
-import { addElement, updateSizePos, updateBackground } from "../actions";
+import {
+  addElement,
+  updateSizePos,
+  updateBackground,
+  clearAllElements
+} from "../actions";
 import { RootState } from "../reducers";
 import { Element, DataArray } from "./types";
 import BgSelector from "./BgSelector";
@@ -147,23 +152,39 @@ function Main() {
     [elements, background]
   );
 
+  const showProfile = () => {
+    getProfile("").then((data: DataArray) => {
+      if (data) {
+        data.elements.map((obj: Element) => {
+          dispatch(addElement(obj));
+        });
+        dispatch(updateBackground(data.background));
+      }
+    });
+  };
+
+  //This takes care off what should happen post editting
   useEffect(() => {
     if (!isEdit && !firstRun.current) {
       showSave();
-    } else if (firstRun || !isSearching) {
-      //On first run.
-      getProfile("").then((data: DataArray) => {
-        if (data) {
-          data.elements.map((obj: Element) => {
-            dispatch(addElement(obj));
-          });
-          dispatch(updateBackground(data.background));
-        }
-      });
-
-      firstRun.current = false;
     }
-  }, [isEdit, isSearching]);
+  }, [isEdit]);
+
+  //This will happen only once, on the first mount
+  useEffect(() => {
+    showProfile();
+    firstRun.current = false;
+  }, []);
+
+  // This takes care of what should happen when we're no longer searching (i.e returned home)
+  useEffect(() => {
+    if (!isSearching) {
+      //On first run.
+      console.log(isSearching); // firstRun is reset probably.
+      dispatch(clearAllElements()); //empty the state
+      showProfile();
+    }
+  }, [isSearching]);
 
   // onResizeStop, onDragStop => dispatch to state and update state, because we get the elements from the state.
   // however, nmight cause a loop.

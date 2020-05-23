@@ -58,6 +58,10 @@ const gridReducer = (
           }
         }
       });
+    case "CLEAR_ALL":
+      return update(state, () => {
+        return initialUserState;
+      });
     default:
       return state;
   }
