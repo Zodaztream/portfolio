@@ -6,9 +6,9 @@ import {
 } from "react-redux";
 import { findByLabelText } from "@testing-library/dom";
 import SearchIcon from "@material-ui/icons/Search";
-import AccountBox from "@material-ui/icons/AccountBox";
-import Close from "@material-ui/icons/Close";
-import Create from "@material-ui/icons/Create";
+import AccountBox from "@material-ui/icons/AccountBoxOutlined";
+import Close from "@material-ui/icons/CloseOutlined";
+import Create from "@material-ui/icons/CreateOutlined";
 import InputBase from "@material-ui/core/InputBase";
 import { useModal } from "react-modal-hook";
 import { edit, toggleAccountMenu, clearAllElements } from "../actions";
@@ -107,7 +107,6 @@ const styleSheet = makeStyles((theme: Theme) =>
     toolBarIcon: {
       display: "flex",
       flex: "1",
-      fill: "white",
       height: "75%",
       width: "20%"
     }
@@ -119,7 +118,7 @@ const styleSheet_outside = {
     display: "flex",
     width: "100%",
     height: "100%",
-    backgroundColor: "#C0C1C1",
+    backgroundColor: "#f8f8f8",
     flexDirection: "row" as "row"
   },
   searchBar: {
@@ -128,20 +127,19 @@ const styleSheet_outside = {
     flex: "5",
     justifyContent: "flexStart",
     alignItems: "center" as "center",
-    backgroundColor: "white"
+    backgroundColor: "#f8f8f8"
   },
 
   toolBar: {
     display: "flex",
     flex: "1",
-    backgroundColor: "teal"
+    backgroundColor: "#f8f8f8"
     // might be cool to have hover and fade : look at styleSheet as reference"
   },
 
   toolBarIcon: {
     display: "flex",
     flex: "1",
-    fill: "white",
     height: "75%",
     width: "20%"
   },

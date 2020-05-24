@@ -20,7 +20,7 @@ const useSelector: TypedUseSelectorHook<RootState> = useReduxSelector;
 
 function mainStyle(backgroundURL: string) {
   return {
-    backgroundColor: "#519674",
+    backgroundColor: "#F5F8FF",
     backgroundImage: `url(${backgroundURL})`,
     height: "93%",
     padding: "0",
@@ -34,7 +34,7 @@ function mainStyle(backgroundURL: string) {
 
 const styleSheet = {
   layoutTop: {
-    backgroundColor: "black",
+    backgroundColor: "#FFFCF5",
     height: "7%",
     padding: "0",
     margin: "0"
