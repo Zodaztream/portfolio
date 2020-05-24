@@ -249,6 +249,7 @@ function Top() {
           onClick={() =>
             handleLogout().then(() => {
               dispatch(clearAllElements());
+              dispatch(updateBackground(""));
             })
           }
         >

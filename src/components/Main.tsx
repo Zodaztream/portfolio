@@ -118,6 +118,7 @@ function Main() {
   const dispatch = useDispatch();
   const firstRun = useRef(true);
 
+  // Prompts the user to save post editting
   const [showSave, hideSave] = useModal(
     () => (
       <Dialog open={true} onClose={hideSave}>

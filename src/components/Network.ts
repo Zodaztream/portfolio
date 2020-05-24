@@ -1,11 +1,7 @@
-/**   This file handles the connection to the server */
-
-import { useDispatch } from "react-redux";
+/**   This file handles the connection to the REST-server */
 import { Element, DataArray, ResponseType, Elements } from "./types";
-import { addElement } from "../actions";
-import { element } from "prop-types";
 
-var base_url: string = "http://localhost:5000/";
+var base_url: string = "https://portfoliotddd27.herokuapp.com/";
 
 export const handleLogin = (username: string, password: string) => {
   let headers = new Headers();
