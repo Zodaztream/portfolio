@@ -66,3 +66,10 @@ export const toggleAccountMenu = () => {
     type: "TOGGLE_MENU"
   };
 };
+
+export const setMessage = (message: string, error: boolean) => {
+  return {
+    type: "SET_MESSAGE",
+    payload: { message, error }
+  };
+};

@@ -11,7 +11,12 @@ import Close from "@material-ui/icons/CloseOutlined";
 import Create from "@material-ui/icons/CreateOutlined";
 import InputBase from "@material-ui/core/InputBase";
 import { useModal } from "react-modal-hook";
-import { edit, toggleAccountMenu, clearAllElements } from "../actions";
+import {
+  edit,
+  toggleAccountMenu,
+  clearAllElements,
+  setMessage
+} from "../actions";
 import AccountMenu from "./AccountMenu";
 import {
   Theme,
@@ -73,7 +78,11 @@ const styleSheet = makeStyles((theme: Theme) =>
       [theme.breakpoints.up("sm")]: {
         marginLeft: theme.spacing(3),
         width: "auto"
-      }
+      },
+      zIndex: 9999,
+      WebkitBoxShadow: `0px 10px 20px 0px rgba(0,0,0,0.25)`,
+      mozBoxShadow: `0px 10px 20px 0px rgba(0,0,0,0.25)`,
+      boxShadow: `0px 10px 20px 0px rgba(0,0,0,0.25)`
     },
 
     toolBarEnabled: {
@@ -118,28 +127,34 @@ const styleSheet_outside = {
     display: "flex",
     width: "100%",
     height: "100%",
-    backgroundColor: "#f8f8f8",
-    flexDirection: "row" as "row"
+    backgroundColor: "#B1A296"
   },
   searchBar: {
-    margin: "0.5% 0.5% 0.5% 1%",
     display: "flex",
     flex: "5",
     justifyContent: "flexStart",
     alignItems: "center" as "center",
-    backgroundColor: "#f8f8f8"
+    backgroundColor: "#B1A296",
+    WebkitBoxShadow: `0px 10px 20px 0px rgba(0,0,0,0.25)`,
+    MozBoxShadow: `0px 10px 20px 0px rgba(0,0,0,0.25)`,
+    boxShadow: `0px 10px 20px 0px rgba(0,0,0,0.25)`
   },
 
   toolBar: {
     display: "flex",
     flex: "1",
-    backgroundColor: "#f8f8f8"
+    backgroundColor: "#B1A296",
+    WebkitBoxShadow: `0px 10px 20px 0px rgba(0,0,0,0.25)`,
+    MozBoxShadow: `0px 10px 20px 0px rgba(0,0,0,0.25)`,
+    boxShadow: `0px 10px 20px 0px rgba(0,0,0,0.25)`,
+    zIndex: 9999
     // might be cool to have hover and fade : look at styleSheet as reference"
   },
 
   toolBarIcon: {
     display: "flex",
     flex: "1",
+    fill: "white",
     height: "75%",
     width: "20%"
   },
@@ -185,6 +200,13 @@ function Top() {
                         dispatch(addElement(obj));
                       });
                       dispatch(updateBackground(data.background));
+                    } else {
+                      dispatch(
+                        setMessage(
+                          search + " does not exist in the database",
+                          false
+                        )
+                      );
                     }
                   });
                 } else {
@@ -230,7 +252,14 @@ function Top() {
         <div
           className={buttonClassname}
           onClick={() => {
-            if (!isSearching) dispatch(edit());
+            handlePing().then(success => {
+              if (success) {
+                if (!isSearching) dispatch(edit());
+              } else {
+                dispatch(toggleAccountMenu());
+                showAccountModal();
+              }
+            });
           }}
         >
           <Create style={styleSheet_outside.toolBarIcon} />

@@ -6,6 +6,7 @@ import gridReducer from "./gridElement";
 import backgroundImageReducer from "./backgroundImage";
 import toggleAccountMenuReducer from "./toggleAccountMenu";
 import searchReducer from "./search";
+import messageReducer from "./message";
 
 const allReducers = combineReducers({
   counter: counterReducer,
@@ -13,7 +14,8 @@ const allReducers = combineReducers({
   elements: gridReducer,
   backgroundImage: backgroundImageReducer,
   toggleAccountMenu: toggleAccountMenuReducer,
-  isSearching: searchReducer
+  isSearching: searchReducer,
+  globalMessage: messageReducer
 });
 
 export type RootState = ReturnType<typeof allReducers>;
