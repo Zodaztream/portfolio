@@ -123,7 +123,7 @@ function App() {
           className={
             globalMessage.message ? classes.messageBarShow : classes.messageBar
           }
-          style={{ backgroundColor: globalMessage.error ? "green" : "red" }}
+          style={{ backgroundColor: globalMessage.error ? "red" : "green" }}
         >
           {globalMessage.message ? (
             <IconButton onClick={() => dispatch(setMessage("", false))}>

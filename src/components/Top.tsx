@@ -204,7 +204,7 @@ function Top() {
                       dispatch(
                         setMessage(
                           search + " does not exist in the database",
-                          false
+                          true
                         )
                       );
                     }
