@@ -26,7 +26,7 @@ import {
 } from "@material-ui/core/styles";
 import { Button } from "@material-ui/core";
 import { handleLogout, getProfile, handlePing } from "./Network";
-import { Element, DataArray } from "./types";
+import { Element, DataArray, ResponseType } from "./types";
 import { addElement, setSearching, updateBackground } from "../actions";
 import IconButton from "@material-ui/core/IconButton";
 import { RootState } from "../reducers";
@@ -43,10 +43,10 @@ const styleSheet = makeStyles((theme: Theme) =>
       padding: theme.spacing(0, 2),
       height: "100%",
       position: "absolute" as "absolute",
-      zIndex: 9999,
       display: "flex",
       alignItems: "center" as "center",
-      justifyContent: "center" as "center"
+      justifyContent: "center" as "center",
+      zIndex: 999
     },
 
     inputRoot: {
@@ -79,7 +79,6 @@ const styleSheet = makeStyles((theme: Theme) =>
         marginLeft: theme.spacing(3),
         width: "auto"
       },
-      zIndex: 9999,
       WebkitBoxShadow: `0px 10px 20px 0px rgba(0,0,0,0.25)`,
       mozBoxShadow: `0px 10px 20px 0px rgba(0,0,0,0.25)`,
       boxShadow: `0px 10px 20px 0px rgba(0,0,0,0.25)`
@@ -146,8 +145,7 @@ const styleSheet_outside = {
     backgroundColor: "#B1A296",
     WebkitBoxShadow: `0px 10px 20px 0px rgba(0,0,0,0.25)`,
     MozBoxShadow: `0px 10px 20px 0px rgba(0,0,0,0.25)`,
-    boxShadow: `0px 10px 20px 0px rgba(0,0,0,0.25)`,
-    zIndex: 9999
+    boxShadow: `0px 10px 20px 0px rgba(0,0,0,0.25)`
     // might be cool to have hover and fade : look at styleSheet as reference"
   },
 
@@ -183,39 +181,40 @@ function Top() {
     [classes.toolBarDisabled]: isSearching
   });
 
+  // this function happens what should happen when we search
+  const searchOnclick = () => {
+    handlePing().then(success => {
+      if (success) {
+        dispatch(setSearching(true));
+        dispatch(clearAllElements());
+        dispatch(setMessage(search + " does not exist in the database", true));
+        getProfile(search).then((response: ResponseType | void) => {
+          if (response) {
+            if (response.success) {
+              const { elements, background }: DataArray = JSON.parse(
+                response.data
+              );
+              elements.map((obj: Element) => {
+                dispatch(addElement(obj));
+              });
+              dispatch(updateBackground(background));
+            } else {
+              dispatch(setMessage(response.message, true));
+            }
+          }
+        });
+      } else {
+        dispatch(toggleAccountMenu());
+        showAccountModal();
+      }
+    });
+  };
+
   return (
     <div style={styleSheet_outside.mainContainer}>
       <div style={styleSheet_outside.searchBar}>
         <div className={classes.search}>
-          <IconButton
-            className={classes.searchIcon}
-            onClick={() => {
-              handlePing().then(success => {
-                if (success) {
-                  dispatch(setSearching(true));
-                  dispatch(clearAllElements());
-                  getProfile(search).then((data: DataArray) => {
-                    if (data) {
-                      data.elements.map((obj: Element) => {
-                        dispatch(addElement(obj));
-                      });
-                      dispatch(updateBackground(data.background));
-                    } else {
-                      dispatch(
-                        setMessage(
-                          search + " does not exist in the database",
-                          true
-                        )
-                      );
-                    }
-                  });
-                } else {
-                  dispatch(toggleAccountMenu());
-                  showAccountModal();
-                }
-              });
-            }}
-          >
+          <IconButton className={classes.searchIcon} onClick={searchOnclick}>
             <SearchIcon />
           </IconButton>
           <InputBase

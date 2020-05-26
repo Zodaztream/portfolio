@@ -9,6 +9,7 @@ export const handleLogin = (username: string, password: string) => {
   headers.append("Access-Control-Allow-Headers", "Content-Type");
   headers.append("Access-Control-Allow-Headers", "Authorization");
   headers.append("Content-Type", "application/x-www-form-urlencoded");
+  console.log("Login Request");
 
   const params = new URLSearchParams();
   params.append("username", username);
@@ -21,12 +22,10 @@ export const handleLogin = (username: string, password: string) => {
   })
     .then(response => response.text())
     .then(responseData => {
-      console.log("trying to login");
       let parsed: ResponseType = JSON.parse(responseData);
       const { message, success, data } = parsed;
       if (success) {
         localStorage.setItem("token", data);
-        console.log("Successfully logged in");
       } else {
         console.log(message); //temporary
       }
@@ -41,6 +40,7 @@ export const handleRegister = (username: string, password: string) => {
   headers.append("Access-Control-Allow-Headers", "Content-Type");
   headers.append("Access-Control-Allow-Headers", "Authorization");
   headers.append("Content-Type", "application/x-www-form-urlencoded");
+  console.log("Register  rquest");
 
   const params = new URLSearchParams();
   params.append("username", username);
@@ -53,7 +53,6 @@ export const handleRegister = (username: string, password: string) => {
   })
     .then(response => response.text())
     .then(responseData => {
-      console.log("trying to login");
       let parsed: ResponseType = JSON.parse(responseData);
       const { message, success } = parsed;
       return success;
@@ -69,6 +68,7 @@ export const handleLogout = () => {
   headers.append("Access-Control-Allow-Headers", "Content-Type");
   headers.append("Access-Control-Allow-Headers", "Authorization");
   headers.append("Content-Type", "application/x-www-form-urlencoded");
+  console.log("Logout Request");
 
   const params = new URLSearchParams();
   const PromiseLogout = fetch(base_url + "logout", {
@@ -108,6 +108,7 @@ export const handleProfileUpdate = (
   headers.append("Access-Control-Allow-Headers", "Content-Type");
   headers.append("Access-Control-Allow-Headers", "Authorization");
   headers.append("Content-Type", "application/x-www-form-urlencoded");
+  console.log("Profile request");
 
   const data = new URLSearchParams();
   data.append("data", JSON.stringify(dataBuilder));
@@ -125,7 +126,6 @@ export const handleProfileUpdate = (
   })
     .then(response => response.text())
     .then(responseData => {
-      console.log("Here!");
       let parsed: ResponseType = JSON.parse(responseData);
       const { message, success } = parsed;
       if (!success) {
@@ -148,6 +148,7 @@ export const getProfile = (username: string) => {
   headers.append("Access-Control-Allow-Headers", "Content-Type");
   headers.append("Access-Control-Allow-Headers", "Authorization");
   headers.append("Content-Type", "application/x-www-form-urlencoded");
+  console.log("Profile Request 2");
 
   const data = new URLSearchParams();
   data.append("username", username);
@@ -163,21 +164,19 @@ export const getProfile = (username: string) => {
   })
     .then(response => response.text())
     .then(responseData => {
-      console.log("Here!");
       let parsed: ResponseType = JSON.parse(responseData);
       const { message, success, data } = parsed;
       if (!success) {
         console.log(message);
       }
-      return data;
+      return parsed;
     })
-    .then(data => {
-      //const { elements }: DataArray = JSON.parse(data);
-      return JSON.parse(data);
-    })
-    .catch(() => {
-      console.log("Failed fetching, error");
-    });
+    .catch(() => {});
+  //.then(data => {
+  //  //const { elements }: DataArray = JSON.parse(data);
+  //  return JSON.parse(data);
+  //})
+
   return PromiseProfile;
 };
 
@@ -190,6 +189,8 @@ export const handlePing = () => {
   headers.append("Access-Control-Allow-Headers", "Content-Type");
   headers.append("Access-Control-Allow-Headers", "Authorization");
   headers.append("Content-Type", "application/x-www-form-urlencoded");
+
+  console.log("Ping Request");
 
   const PromisePong = fetch(base_url + "ping", {
     method: "GET",
@@ -212,13 +213,14 @@ export const handlePing = () => {
 export const handleSearch = (username: string) => {
   let headers = new Headers();
   let token = localStorage.getItem("token");
-  console.log("Searching!");
 
   headers.append("Authorization", `Basic ${btoa(`${token}:`)}`);
   headers.append("Access-Control-Allow-Origin", "*");
   headers.append("Access-Control-Allow-Headers", "Content-Type");
   headers.append("Access-Control-Allow-Headers", "Authorization");
   headers.append("Content-Type", "application/x-www-form-urlencoded");
+
+  console.log("Handle Request");
 
   const data = new URLSearchParams();
   data.append("username", username);
@@ -234,7 +236,6 @@ export const handleSearch = (username: string) => {
   })
     .then(response => response.text())
     .then(responseData => {
-      console.log("Here!");
       let parsed: ResponseType = JSON.parse(responseData);
       const { message, success, data } = parsed;
       if (!success) {

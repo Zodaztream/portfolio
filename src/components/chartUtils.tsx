@@ -642,7 +642,7 @@ export function getData(tag: string) {
   )
     .then(response => response.text())
     .then(data => {
-      var csv = convertJsonToCsv(testData);
+      var csv = convertJsonToCsv(data);
       return csvParse(csv, parseData(parseDateTime));
     })
     .then(data => {

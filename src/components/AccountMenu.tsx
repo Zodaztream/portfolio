@@ -7,7 +7,12 @@ import TextField from "@material-ui/core/TextField";
 import Divider from "@material-ui/core/Divider";
 import Button from "@material-ui/core/Button";
 import { useDispatch } from "react-redux";
-import { toggleAccountMenu, updateBackground, addElement } from "../actions";
+import {
+  toggleAccountMenu,
+  updateBackground,
+  addElement,
+  setMessage
+} from "../actions";
 import { makeStyles } from "@material-ui/core";
 import background from "../images/background.jpg";
 import { url } from "inspector";
@@ -16,7 +21,7 @@ import { green, red } from "@material-ui/core/colors";
 import Fab from "@material-ui/core/Fab";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import clsx from "clsx";
-import { DataArray, Element } from "./types";
+import { DataArray, Element, ResponseType } from "./types";
 
 // take hideAccountMOdal props
 
@@ -132,14 +137,24 @@ function AccountMenu(props: Iprops) {
                         setSuccess(promiseSuccess);
                         setLoading(false);
                         if (promiseSuccess) {
-                          getProfile("").then((data: DataArray) => {
-                            if (data) {
-                              data.elements.map((obj: Element) => {
-                                dispatch(addElement(obj));
-                              });
-                              dispatch(updateBackground(data.background));
+                          getProfile("").then(
+                            (response: ResponseType | void) => {
+                              if (response) {
+                                if (response.success) {
+                                  const {
+                                    elements,
+                                    background
+                                  }: DataArray = JSON.parse(response.data);
+                                  elements.map((obj: Element) => {
+                                    dispatch(addElement(obj));
+                                  });
+                                  dispatch(updateBackground(background));
+                                } else {
+                                  dispatch(setMessage(response.message, true));
+                                }
+                              }
                             }
-                          });
+                          );
                           timer.current = window.setTimeout(() => {
                             dispatch(toggleAccountMenu());
                             props.onClose();

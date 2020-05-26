@@ -22,10 +22,11 @@ import {
   addElement,
   updateSizePos,
   updateBackground,
-  clearAllElements
+  clearAllElements,
+  setMessage
 } from "../actions";
 import { RootState } from "../reducers";
-import { Element, DataArray } from "./types";
+import { Element, DataArray, ResponseType } from "./types";
 import BgSelector from "./BgSelector";
 import { useModal } from "react-modal-hook";
 import Dialog from "@material-ui/core/Dialog";
@@ -38,14 +39,6 @@ import { ParsedPath } from "path";
 import { getProfile, handleProfileUpdate } from "./Network";
 
 const ReactGridLayout = WidthProvider(GridLayout);
-
-// perhaps throw props down to Stockchart (the $TAG (e.g. MSFT) link to use for to display each stockchart)
-// idea is to have a JSON file with these div tags in the database, we'll then parse this data
-// also, ensure that when you search for users, they can't edit others' layout. Also, ensure you have to be in "edit"-mode in order to
-// add a stockchart (and you can't be in edit-mode for other profiles)
-// Create a proper JSON structure for each div tag with data-grid JSX. Loop through the JSON structure and do map with each respective
-// JSON element. Also, one JSON elemenet should be which yahoo-finance stockchart to show
-// Save button ?
 
 const useSelector: TypedUseSelectorHook<RootState> = useReduxSelector;
 
@@ -82,7 +75,6 @@ function addItem() {
  * @returns Component to render
  */
 function generateElement(data: Element) {
-  console.log({ i: data.i, w: data.w, t: "HELLO" });
   return (
     <div
       key={data.i}
@@ -98,11 +90,7 @@ function generateElement(data: Element) {
   );
 }
 
-// { elements: { [id: string]: Element }; background: string }
-// Actually, we might actually have to have local states, as when you type in someone's name. you Obviously don't want old data.
-// but at least I learned something new :)
 //Move out "isEdit" too its own "toolbar" return function
-// NEED TO BE ABLE TO REMOVE ELEMENTS TOO!!
 
 /**
  * @description Displays react grid layout and its grid components
@@ -129,7 +117,9 @@ function Main() {
             variant="contained"
             onClick={() => {
               //maybe do loading circle
-              handleProfileUpdate(elements, background);
+              if (elements) {
+                handleProfileUpdate(elements, background);
+              }
               hideSave();
             }}
             style={{ margin: 4 }}
@@ -154,12 +144,18 @@ function Main() {
 
   // Fetches the profile data from the server/DB and applies it.
   const showProfile = () => {
-    getProfile("").then((data: DataArray) => {
-      if (data) {
-        data.elements.map((obj: Element) => {
-          dispatch(addElement(obj));
-        });
-        dispatch(updateBackground(data.background));
+    getProfile("").then((response: ResponseType | void) => {
+      console.log(response);
+      if (response) {
+        if (response.success) {
+          const { elements, background }: DataArray = JSON.parse(response.data);
+          elements.map((obj: Element) => {
+            dispatch(addElement(obj));
+          });
+          dispatch(updateBackground(background));
+        } else {
+          dispatch(setMessage(response.message, false));
+        }
       }
     });
   };
@@ -173,15 +169,17 @@ function Main() {
   }, [isEdit]);
 
   //This will happen only once, on the first mount
-  useEffect(() => {
-    showProfile();
-    firstRun.current = false;
-  }, []);
+  //useEffect(() => {
+  //  showProfile();
+  //  firstRun.current = false;
+  //}, []);
 
   // This takes care of what should happen when we're no longer searching (i.e returned home) and on page refresh.
   useEffect(() => {
     if (!isSearching) {
       dispatch(clearAllElements()); //empty the state
+      firstRun.current = false;
+      console.log("Showing the profile");
       showProfile();
     }
   }, [isSearching]);
@@ -196,7 +194,7 @@ function Main() {
         cols={12}
         rowHeight={30}
         width={1200}
-        verticalCompact={false}
+        compactType={null}
         isResizable={isEdit ? true : false}
         isDraggable={isEdit ? true : false}
         onResizeStop={(

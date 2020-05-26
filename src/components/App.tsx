@@ -46,7 +46,6 @@ const styleSheet = makeStyles((theme: Theme) =>
       padding: theme.spacing(0, 2),
       height: "100%",
       position: "absolute" as "absolute",
-      zIndex: 9999,
       display: "flex",
       alignItems: "center" as "center",
       justifyContent: "center" as "center"
@@ -58,7 +57,6 @@ const styleSheet = makeStyles((theme: Theme) =>
       margin: "0"
     },
     messageBar: {
-      zIndex: 9999,
       position: "absolute" as "absolute",
       left: 0,
       bottom: 0,
@@ -70,7 +68,6 @@ const styleSheet = makeStyles((theme: Theme) =>
     },
     messageBarShow: {
       display: "flex",
-      zIndex: 9999,
       position: "absolute" as "absolute",
       left: 0,
       bottom: 0,
@@ -114,16 +111,19 @@ function App() {
       <div
         style={{
           overflow: "hidden",
-          height: "100%",
           width: "100%",
-          position: "absolute"
+          height: "10%",
+          position: "absolute",
+          bottom: 0
         }}
       >
         <div
           className={
             globalMessage.message ? classes.messageBarShow : classes.messageBar
           }
-          style={{ backgroundColor: globalMessage.error ? "red" : "green" }}
+          style={{
+            backgroundColor: globalMessage.error ? "red" : "green"
+          }}
         >
           {globalMessage.message ? (
             <IconButton onClick={() => dispatch(setMessage("", false))}>
