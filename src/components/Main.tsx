@@ -249,7 +249,7 @@ function Main() {
             data-grid={{ x: 0, y: 1, w: 0, h: 0, static: true }}
           />
         )}
-
+        {Object.keys(elements).map(key => generateElement(elements[key]))}
         {showbg ? (
           <div key="BG_MENU" data-grid={{ x: 0.5, y: 1, w: 0, h: 0 }}>
             <BgSelector onChoose={setShowbg}></BgSelector>
@@ -260,7 +260,6 @@ function Main() {
             data-grid={{ x: 0.5, y: 1, w: 0, h: 0, static: true }}
           />
         )}
-        {Object.keys(elements).map(key => generateElement(elements[key]))}
       </ReactGridLayout>
     </div>
   );

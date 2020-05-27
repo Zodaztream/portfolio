@@ -91,10 +91,12 @@ function Stockchart(props: IProps) {
     setChoose(value);
   };
 
+  /** This function will retrieve the parsed response from the Network fetch to the API
+   * And if the data is valid, then the data for this stockchart will be applied.
+   */
   const tryChart = (chart: string) => {
     setLoading(true);
     getData(chart).then(data => {
-      //console.log(data);
       if ((data as DataExceeded).success !== undefined) {
         if ((data as DataExceeded).type === "exhausted") {
           dispatch(
@@ -104,7 +106,6 @@ function Stockchart(props: IProps) {
             )
           );
           timer.current = window.setTimeout(() => {
-            console.log("waiting");
             tryChart(chart);
           }, 60000);
         } else {
@@ -123,8 +124,8 @@ function Stockchart(props: IProps) {
     });
     setChoose(false);
   };
+  //This is called when it has received a chart.
   useEffect(() => {
-    //Should take the Chart prop and call the API
     if (props.chart) {
       tryChart(props.chart);
     }
