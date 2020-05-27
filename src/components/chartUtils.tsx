@@ -1,6 +1,8 @@
-import { tsvParse, csvParse, DSVRowString } from "d3-dsv";
+import { tsvParse, csvParse, DSVRowString, DSVParsedArray } from "d3-dsv";
 import { timeParse } from "d3-time-format";
 import { keys } from "@material-ui/core/styles/createBreakpoints";
+import { StringDecoder } from "string_decoder";
+import {DataExceeded} from "./types";
 
 interface IData {
   date: Date;
@@ -602,7 +604,7 @@ function trimData(data: DataStruct) {
   Object.keys(data).map((date: string) => {
     var rawDate = parseDateTime(date);
     //special case for weekend. True is just for debug ( currently using true because the testData is older than today and it's not yet a weekend)
-    if(today.getDate() == rawDate?.getDate() || [6, 0].includes(today.getDay()) || true ){ //if no data is returned, then it will just fail. So when we fetch data, ensure that if it's a weekend, we still get the previous day's data
+    if(today.getDate() == rawDate?.getDate() || [6, 0].includes(today.getDay()) ){ //if no data is returned, then it will just fail. So when we fetch data, ensure that if it's a weekend, we still get the previous day's data
       result[date] = data[date];
     }
   });
@@ -628,6 +630,7 @@ function convertJsonToCsv(data: string) {
   return csvOut;
 }
 
+
 export function getData(tag: string) {
   // take the tag as argument and is  IUDORZ4BGIONCWPR , https://www.alphavantage.co/documentation/ Only allowed 5 calls a minute
   /** If fetch fails from vantage api, or if there's some return string that tells us that 5  calls has been exceeded, then
@@ -637,16 +640,26 @@ export function getData(tag: string) {
    *  "Waiting for API-calls to replenish..."  and maybe have the . -> .. -> ... -> . etc
    */
   const promiseIntraDayContinuous = fetch(
-    //`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${tag}&interval=5min&apikey=IUDORZ4BGIONCWPR`
-    "https://cdn.rawgit.com/rrag/react-stockcharts/master/docs/data/bitfinex_xbtusd_1m.csv"
+    `https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${tag}&interval=5min&apikey=IUDORZ4BGIONCWPR`
+    //"https://cdn.rawgit.com/rrag/react-stockcharts/master/docs/data/bitfinex_xbtusd_1m.csv"
   )
     .then(response => response.text())
     .then(data => {
+      if(data.includes("Thank you") ){
+        return {success: false, type: "exhausted"} 
+      }
+      else if(data.includes("Invalid API call")){
+        return {success: false, type: "error"}
+      }
+
       var csv = convertJsonToCsv(data);
       return csvParse(csv, parseData(parseDateTime));
     })
     .then(data => {
-      data.sort((a: IData, b: IData) => {
+      if((data as DataExceeded).success !== undefined){
+        return data
+      }
+      (data as DSVParsedArray<any>).sort((a: IData, b: IData) => {
         return a.date.valueOf() - b.date.valueOf();
       });
       return data;

@@ -190,7 +190,7 @@ function Top() {
         dispatch(setMessage(search + " does not exist in the database", true));
         getProfile(search).then((response: ResponseType | void) => {
           if (response) {
-            if (response.success) {
+            if (response.data && response.success) {
               const { elements, background }: DataArray = JSON.parse(
                 response.data
               );

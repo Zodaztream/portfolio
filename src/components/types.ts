@@ -27,3 +27,8 @@ export interface DataArray {
   elements: Element[];
   background: string;
 }
+
+export type DataExceeded = {
+  success: boolean;
+  type: string;
+};

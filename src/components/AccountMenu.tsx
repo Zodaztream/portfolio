@@ -140,7 +140,7 @@ function AccountMenu(props: Iprops) {
                           getProfile("").then(
                             (response: ResponseType | void) => {
                               if (response) {
-                                if (response.success) {
+                                if (response.data && response.success) {
                                   const {
                                     elements,
                                     background

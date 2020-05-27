@@ -8,13 +8,13 @@ import React, { useEffect, useState, ReactChild } from "react";
 import ControlPoint from "@material-ui/icons/ControlPoint";
 import Clear from "@material-ui/icons/Clear";
 import IconButton from "@material-ui/core/IconButton";
-import { Element } from "./types";
+import { Element, DataExceeded } from "./types";
 import {
   useDispatch,
   useSelector as useReduxSelector,
   TypedUseSelectorHook
 } from "react-redux";
-import { updateElement, removeElement } from "../actions";
+import { removeElement, setMessage } from "../actions";
 import Chart from "./Chart";
 import { getData } from "./chartUtils";
 //https://medium.com/@vitalyb/dont-let-typescript-slow-you-down-92d394ec8c9f
@@ -22,7 +22,8 @@ import { Theme, withStyles, createStyles } from "@material-ui/core/styles";
 import { DSVParsedArray } from "d3-dsv";
 import StockPicker from "./StockPicker";
 import { RootState } from "../reducers";
-
+import CircularProgress from "@material-ui/core/CircularProgress";
+import { green } from "@material-ui/core/colors";
 const useSelector: TypedUseSelectorHook<RootState> = useReduxSelector;
 
 const styleSheet = (theme: Theme) =>
@@ -36,6 +37,14 @@ const styleSheet = (theme: Theme) =>
         //backgroundColor: fade(theme.palette.common.white, 0.25),
         opacity: 1
       }
+    },
+    buttonProgress: {
+      color: green[500],
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      marginTop: -62,
+      marginLeft: -62
     }
   });
 
@@ -54,6 +63,7 @@ interface IData {
 interface IProps {
   classes: {
     toolBarItem: string;
+    buttonProgress: string;
   };
   chart?: string; //The tag of the data to show e.g. "MSFT", "TSLA", "AMD"
   id: string;
@@ -70,6 +80,8 @@ function Stockchart(props: IProps) {
   const [choose, setChoose] = useState(false);
   const [chart, setChart] = useState<IData | undefined>(undefined);
   const [update, setUpdate] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const timer = React.useRef<number>();
   const dispatch = useDispatch();
   const isEdit = useSelector(state => state.edit);
 
@@ -79,14 +91,42 @@ function Stockchart(props: IProps) {
     setChoose(value);
   };
 
+  const tryChart = (chart: string) => {
+    setLoading(true);
+    getData(chart).then(data => {
+      //console.log(data);
+      if ((data as DataExceeded).success !== undefined) {
+        if ((data as DataExceeded).type === "exhausted") {
+          dispatch(
+            setMessage(
+              "The allowed amount off API calls have been exceeded. This will resolve itself after some time ",
+              false
+            )
+          );
+          timer.current = window.setTimeout(() => {
+            console.log("waiting");
+            tryChart(chart);
+          }, 60000);
+        } else {
+          setLoading(false);
+          dispatch(
+            setMessage(
+              "Sorry, the TAG you asked for does not exist, please try another",
+              true
+            )
+          );
+        }
+      } else {
+        setLoading(false);
+        setChart({ data: data as DSVParsedArray<any> });
+      }
+    });
+    setChoose(false);
+  };
   useEffect(() => {
     //Should take the Chart prop and call the API
     if (props.chart) {
-      getData(props.chart).then(data => {
-        //console.log(data);
-        setChart({ data });
-      });
-      setChoose(false);
+      tryChart(props.chart);
     }
   }, [update, props.chart]);
 
@@ -107,6 +147,10 @@ function Stockchart(props: IProps) {
         </IconButton>
       ) : (
         ""
+      )}
+
+      {loading && (
+        <CircularProgress size={124} className={classes.buttonProgress} />
       )}
 
       {chart ? (
@@ -134,14 +178,16 @@ function Stockchart(props: IProps) {
           }}
         >
           <div className={classes.toolBarItem}>
-            <ControlPoint
-              onClick={() => setChoose(true)}
-              style={{
-                fill: "white",
-                height: "5vh",
-                width: "5vh"
-              }}
-            ></ControlPoint>
+            {!loading && (
+              <ControlPoint
+                onClick={() => setChoose(true)}
+                style={{
+                  fill: "white",
+                  height: "5vh",
+                  width: "5vh"
+                }}
+              ></ControlPoint>
+            )}
           </div>
         </div>
       )}

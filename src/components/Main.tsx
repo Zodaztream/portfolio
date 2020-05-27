@@ -26,16 +26,13 @@ import {
   setMessage
 } from "../actions";
 import { RootState } from "../reducers";
-import { Element, DataArray, ResponseType } from "./types";
+import { Element, DataArray, ResponseType, DataExceeded } from "./types";
 import BgSelector from "./BgSelector";
 import { useModal } from "react-modal-hook";
 import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Button from "@material-ui/core/Button";
-import Divider from "@material-ui/core/Divider";
-import { ParsedPath } from "path";
 import { getProfile, handleProfileUpdate } from "./Network";
 
 const ReactGridLayout = WidthProvider(GridLayout);
@@ -147,7 +144,7 @@ function Main() {
     getProfile("").then((response: ResponseType | void) => {
       console.log(response);
       if (response) {
-        if (response.success) {
+        if (response.data && response.success) {
           const { elements, background }: DataArray = JSON.parse(response.data);
           elements.map((obj: Element) => {
             dispatch(addElement(obj));
