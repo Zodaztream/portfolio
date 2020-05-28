@@ -1,3 +1,8 @@
+/**
+ * Background selector component:
+ * Displays the selector in which a user may
+ * add a background-img url
+ */
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { updateElement } from "../actions";
@@ -40,13 +45,14 @@ type IProps = {
   onChoose: (value: boolean) => void;
 };
 
+/**
+ * @description Displays and handles the menu for the background selector
+ */
 function BgSelector(props: IProps) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [bg, setBg] = useState("");
-  // Have a canvas component or something similar to draw a connection between the components. Maybe using hooks?
   return (
-    // might move display flex, flex , etc etc up one level, otherwise it's messy with a lot of sub divs
     <Paper component="form" className={classes.root}>
       <InputBase
         className={classes.input}

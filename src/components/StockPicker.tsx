@@ -1,3 +1,8 @@
+/**
+ * Stockpicker components:
+ * Displays the component which allows the user
+ * to set the stock symbol for that component
+ */
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { updateElement } from "../actions";
@@ -43,10 +48,8 @@ function StockPicker(props: IProps) {
   const bull = <span className={classes.bullet}>•</span>;
   const dispatch = useDispatch();
   const [tag, setTag] = useState("");
-  console.log(tag);
 
   return (
-    // might move display flex, flex , etc etc up one level, otherwise it's messy with a lot of sub divs
     <div
       style={{
         display: "flex",

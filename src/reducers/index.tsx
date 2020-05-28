@@ -1,5 +1,3 @@
-// Contain all reducers in this file
-import counterReducer from "./counter";
 import { combineReducers } from "redux";
 import editReducer from "./edit";
 import gridReducer from "./gridElement";
@@ -8,8 +6,11 @@ import toggleAccountMenuReducer from "./toggleAccountMenu";
 import searchReducer from "./search";
 import messageReducer from "./message";
 
+/**
+ * @description This combines all of the reducers, which
+ * is the beneficial for retrieving states
+ */
 const allReducers = combineReducers({
-  counter: counterReducer,
   edit: editReducer,
   elements: gridReducer,
   backgroundImage: backgroundImageReducer,
@@ -18,5 +19,6 @@ const allReducers = combineReducers({
   globalMessage: messageReducer
 });
 
+// RootState allows the Typescript to deduce the type when fetching a state
 export type RootState = ReturnType<typeof allReducers>;
 export default allReducers;

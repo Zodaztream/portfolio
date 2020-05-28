@@ -9,7 +9,6 @@ export const handleLogin = (username: string, password: string) => {
   headers.append("Access-Control-Allow-Headers", "Content-Type");
   headers.append("Access-Control-Allow-Headers", "Authorization");
   headers.append("Content-Type", "application/x-www-form-urlencoded");
-  console.log("Login Request");
 
   const params = new URLSearchParams();
   params.append("username", username);
@@ -26,8 +25,6 @@ export const handleLogin = (username: string, password: string) => {
       const { message, success, data } = parsed;
       if (success) {
         localStorage.setItem("token", data);
-      } else {
-        console.log(message); //temporary
       }
       return success;
     });
@@ -40,7 +37,6 @@ export const handleRegister = (username: string, password: string) => {
   headers.append("Access-Control-Allow-Headers", "Content-Type");
   headers.append("Access-Control-Allow-Headers", "Authorization");
   headers.append("Content-Type", "application/x-www-form-urlencoded");
-  console.log("Register  rquest");
 
   const params = new URLSearchParams();
   params.append("username", username);
@@ -68,7 +64,6 @@ export const handleLogout = () => {
   headers.append("Access-Control-Allow-Headers", "Content-Type");
   headers.append("Access-Control-Allow-Headers", "Authorization");
   headers.append("Content-Type", "application/x-www-form-urlencoded");
-  console.log("Logout Request");
 
   const params = new URLSearchParams();
   const PromiseLogout = fetch(base_url + "logout", {
@@ -80,8 +75,7 @@ export const handleLogout = () => {
     .then(response => response.text())
     .then(responseData => {
       let parsed: ResponseType = JSON.parse(responseData);
-      const { message, success } = parsed;
-      return success;
+      return parsed;
     });
   localStorage.removeItem("token");
 
@@ -108,7 +102,6 @@ export const handleProfileUpdate = (
   headers.append("Access-Control-Allow-Headers", "Content-Type");
   headers.append("Access-Control-Allow-Headers", "Authorization");
   headers.append("Content-Type", "application/x-www-form-urlencoded");
-  console.log("Profile request");
 
   const data = new URLSearchParams();
   data.append("data", JSON.stringify(dataBuilder));
@@ -128,14 +121,9 @@ export const handleProfileUpdate = (
     .then(responseData => {
       let parsed: ResponseType = JSON.parse(responseData);
       const { message, success } = parsed;
-      if (!success) {
-        console.log(message);
-      }
       return data;
     })
-    .catch(() => {
-      console.log("Failed fetching, error");
-    });
+    .catch(() => {});
   return PromiseProfile;
 };
 
@@ -148,7 +136,6 @@ export const getProfile = (username: string) => {
   headers.append("Access-Control-Allow-Headers", "Content-Type");
   headers.append("Access-Control-Allow-Headers", "Authorization");
   headers.append("Content-Type", "application/x-www-form-urlencoded");
-  console.log("Profile Request 2");
 
   const data = new URLSearchParams();
   data.append("username", username);
@@ -165,10 +152,6 @@ export const getProfile = (username: string) => {
     .then(response => response.text())
     .then(responseData => {
       let parsed: ResponseType = JSON.parse(responseData);
-      const { message, success, data } = parsed;
-      if (!success) {
-        console.log(message);
-      }
       return parsed;
     })
     .catch(() => {});
@@ -190,8 +173,6 @@ export const handlePing = () => {
   headers.append("Access-Control-Allow-Headers", "Authorization");
   headers.append("Content-Type", "application/x-www-form-urlencoded");
 
-  console.log("Ping Request");
-
   const PromisePong = fetch(base_url + "ping", {
     method: "GET",
     mode: "cors",
@@ -204,9 +185,7 @@ export const handlePing = () => {
 
       return success;
     })
-    .catch(() => {
-      console.log("Failed fetching, error");
-    });
+    .catch(() => {});
   return PromisePong;
 };
 
@@ -220,11 +199,9 @@ export const handleSearch = (username: string) => {
   headers.append("Access-Control-Allow-Headers", "Authorization");
   headers.append("Content-Type", "application/x-www-form-urlencoded");
 
-  console.log("Handle Request");
-
   const data = new URLSearchParams();
   data.append("username", username);
-  // need to do error handling as well, but this "template" works!
+
   /** { "elements":  [{"i": "_64.3", "x": 2, "y": 3, "w": 2, "h":7, "chart": ""},  {"i": "_69", "x": 2, "y": 3, "w":5, "h":3, "chart": "MSFT"}], "background": "image.jpg"}
    * should look like this!
    */
@@ -238,17 +215,12 @@ export const handleSearch = (username: string) => {
     .then(responseData => {
       let parsed: ResponseType = JSON.parse(responseData);
       const { message, success, data } = parsed;
-      if (!success) {
-        console.log(message);
-      }
       return data;
     })
     .then(data => {
       const { elements }: DataArray = JSON.parse(data);
       return elements;
     })
-    .catch(() => {
-      console.log("Failed fetching, error");
-    });
+    .catch(() => {});
   return PromiseProfile;
 };

@@ -1,10 +1,5 @@
+// This file contains all the possible actions
 import { Element } from "../components/types";
-export const increment = (/*Arg: type */) => {
-  return {
-    type: "INCREMENT"
-    //payload: Arg
-  };
-};
 
 export const edit = () => {
   return {

@@ -1,3 +1,8 @@
+/**
+ * App component:
+ * This is the highest component in the component hiearchy. This component
+ * Splits into its children: Main and Top
+ */
 import React from "react";
 import {
   useSelector as useReduxSelector,
@@ -8,23 +13,12 @@ import { setMessage } from "../actions";
 import Top from "./Top";
 import Main from "./Main";
 import "./App.css";
-import background from "../images/background.jpg";
 import { RootState } from "../reducers";
-import {
-  Theme,
-  makeStyles,
-  fade,
-  createStyles
-} from "@material-ui/core/styles";
+import { Theme, makeStyles, createStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import Close from "@material-ui/icons/Close";
 
 const useSelector: TypedUseSelectorHook<RootState> = useReduxSelector;
-
-// useDispatch to dispatch (execute) an action, useSelector to get states
-// you have an index file because then it will automatically know how to import, no need for index.TSX files, then.
-// probably the way to go is to store the image links as database entry
-// also, on a side-note: Have a log-in screen when not signed in. Can still search for people's profiles, though.
 
 function mainStyle(backgroundURL: string) {
   return {
@@ -82,6 +76,10 @@ const styleSheet = makeStyles((theme: Theme) =>
   })
 );
 
+/**
+ * @description This is the main functional components, it contains the
+ * Topbar (Top) , Mainbar(Main) and displays the global message.
+ */
 function App() {
   const bgImage = useSelector(state => state.backgroundImage);
   const showAccountMenu = useSelector(state => state.toggleAccountMenu);

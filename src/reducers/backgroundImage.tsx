@@ -3,6 +3,9 @@ interface ActionType {
   payload: string;
 }
 
+/**
+ * @description This redux reducer handles the background to display
+ */
 const backgroundImageReducer = (state: string = "", action: ActionType) => {
   switch (action.type) {
     case "UPDATE_BACKGROUND":

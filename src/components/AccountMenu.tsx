@@ -1,3 +1,7 @@
+/**
+ * AccountMenu component
+ * Displays the Account menu (login, register)
+ */
 import React, { useState, useEffect } from "react";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -22,8 +26,6 @@ import Fab from "@material-ui/core/Fab";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import clsx from "clsx";
 import { DataArray, Element, ResponseType } from "./types";
-
-// take hideAccountMOdal props
 
 interface Iprops {
   onClose: () => void;
@@ -61,21 +63,85 @@ const useStyles = makeStyles({
   }
 });
 
+/**
+ * @description This function component handles the accountmenu modal
+ */
 function AccountMenu(props: Iprops) {
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [loadingRegister, setLoadingRegister] = useState(false);
+  const [successRegister, setSuccessRegister] = useState(false);
   const [hasLoaded, setHasLoaded] = useState(false);
+  const [hasLoadedRegister, setHasLoadedRegister] = useState(false);
   const dispatch = useDispatch();
   const classes = useStyles();
   const timer = React.useRef<number>();
 
+  // This allows the buttons' classes to change dynamically
   const buttonClassname = clsx({
     [classes.buttonSuccess]: success,
     [classes.buttonDefault]: !hasLoaded,
     [classes.buttonUnSuccess]: !success && hasLoaded
   });
+
+  const buttonClassnameRegister = clsx({
+    [classes.buttonSuccess]: successRegister,
+    [classes.buttonDefault]: !hasLoadedRegister,
+    [classes.buttonUnSuccess]: !successRegister && hasLoadedRegister
+  });
+
+  const onClickLoginHandle = () => {
+    if (!loading) {
+      setSuccess(false);
+      setLoading(true);
+      setHasLoaded(true);
+      if (username && password) {
+        handleLogin(username, password).then(promiseSuccess => {
+          setSuccess(promiseSuccess);
+          setLoading(false);
+          if (promiseSuccess) {
+            // on login success fetch the profile
+            getProfile("").then((response: ResponseType | void) => {
+              if (response) {
+                if (response.data && response.success) {
+                  const { elements, background }: DataArray = JSON.parse(
+                    response.data
+                  );
+                  elements.map((obj: Element) => {
+                    dispatch(addElement(obj));
+                  });
+                  dispatch(updateBackground(background));
+                } else if (!response.success) {
+                  dispatch(setMessage(response.message, true));
+                }
+              }
+            });
+            timer.current = window.setTimeout(() => {
+              dispatch(toggleAccountMenu());
+              props.onClose();
+            }, 1000);
+          }
+        });
+      }
+    }
+  };
+
+  const onClickRegisterHandle = () => {
+    if (!loadingRegister) {
+      setSuccessRegister(false);
+      setLoadingRegister(true);
+      setHasLoadedRegister(true);
+
+      if (username && password) {
+        handleRegister(username, password).then(promiseSuccess => {
+          setSuccessRegister(promiseSuccess);
+          setLoadingRegister(false);
+        });
+      }
+    }
+  };
 
   useEffect(() => {
     return () => {
@@ -90,7 +156,7 @@ function AccountMenu(props: Iprops) {
         dispatch(toggleAccountMenu());
         props.onClose();
       }}
-      onExited={() => dispatch(toggleAccountMenu())} // what does onexited do? Does the nice transition back ?
+      onExited={() => dispatch(toggleAccountMenu())}
     >
       <DialogContent className={classes.dialog}>
         <div>
@@ -126,44 +192,7 @@ function AccountMenu(props: Iprops) {
                 variant="contained"
                 className={buttonClassname}
                 disabled={loading}
-                onClick={() => {
-                  if (!loading) {
-                    setSuccess(false);
-                    setLoading(true);
-                    setHasLoaded(true);
-
-                    if (username && password) {
-                      handleLogin(username, password).then(promiseSuccess => {
-                        setSuccess(promiseSuccess);
-                        setLoading(false);
-                        if (promiseSuccess) {
-                          getProfile("").then(
-                            (response: ResponseType | void) => {
-                              if (response) {
-                                if (response.data && response.success) {
-                                  const {
-                                    elements,
-                                    background
-                                  }: DataArray = JSON.parse(response.data);
-                                  elements.map((obj: Element) => {
-                                    dispatch(addElement(obj));
-                                  });
-                                  dispatch(updateBackground(background));
-                                } else {
-                                  dispatch(setMessage(response.message, true));
-                                }
-                              }
-                            }
-                          );
-                          timer.current = window.setTimeout(() => {
-                            dispatch(toggleAccountMenu());
-                            props.onClose();
-                          }, 1000);
-                        }
-                      }); //set error message or somethin
-                    }
-                  }
-                }}
+                onClick={() => onClickLoginHandle()}
               >
                 Login
                 {loading && (
@@ -212,27 +241,12 @@ function AccountMenu(props: Iprops) {
                 form="login-form"
                 color="primary"
                 variant="contained"
-                className={buttonClassname}
-                disabled={loading}
-                onClick={() => {
-                  if (!loading) {
-                    setSuccess(false);
-                    setLoading(true);
-                    setHasLoaded(true);
-
-                    if (username && password) {
-                      handleRegister(username, password).then(
-                        promiseSuccess => {
-                          setSuccess(promiseSuccess);
-                          setLoading(false);
-                        }
-                      ); //set error message or somethin
-                    }
-                  }
-                }}
+                className={buttonClassnameRegister}
+                disabled={loadingRegister}
+                onClick={() => onClickRegisterHandle()}
               >
                 Register
-                {loading && (
+                {loadingRegister && (
                   <CircularProgress
                     size={24}
                     className={classes.buttonProgress}

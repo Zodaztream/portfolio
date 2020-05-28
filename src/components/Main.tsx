@@ -87,8 +87,6 @@ function generateElement(data: Element) {
   );
 }
 
-//Move out "isEdit" too its own "toolbar" return function
-
 /**
  * @description Displays react grid layout and its grid components
  * @returns Element to render
@@ -113,7 +111,6 @@ function Main() {
             color="primary"
             variant="contained"
             onClick={() => {
-              //maybe do loading circle
               if (elements) {
                 handleProfileUpdate(elements, background);
               }
@@ -150,8 +147,8 @@ function Main() {
             dispatch(addElement(obj));
           });
           dispatch(updateBackground(background));
-        } else {
-          dispatch(setMessage(response.message, false));
+        } else if (!response.success) {
+          dispatch(setMessage(response.message, true));
         }
       }
     });
@@ -165,12 +162,6 @@ function Main() {
     }
   }, [isEdit]);
 
-  //This will happen only once, on the first mount
-  //useEffect(() => {
-  //  showProfile();
-  //  firstRun.current = false;
-  //}, []);
-
   // This takes care of what should happen when we're no longer searching (i.e returned home) and on page refresh.
   useEffect(() => {
     if (!isSearching) {
@@ -180,9 +171,6 @@ function Main() {
       showProfile();
     }
   }, [isSearching]);
-
-  // onResizeStop, onDragStop => dispatch to state and update state, because we get the elements from the state.
-  // however, nmight cause a loop.
 
   return (
     <div className={isEdit ? "outline" : ""}>

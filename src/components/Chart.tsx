@@ -1,3 +1,8 @@
+/**
+ * Chart component:
+ * This displays a chart with the data it retrieves.
+ */
+
 import React from "react";
 
 import { scaleTime } from "d3-scale";
@@ -46,7 +51,10 @@ type Props = {
   type: string;
   id: string;
 };
-
+/**
+ * @description A 'ready-example' adapted to work for this project and
+ * extended to work with typescript
+ */
 class CandleStickChartForContinuousIntraDay extends React.Component<Props> {
   render() {
     const { type, data, width, ratio, height, id } = this.props;
@@ -63,7 +71,7 @@ class CandleStickChartForContinuousIntraDay extends React.Component<Props> {
         width={width}
         margin={{ left: 80, right: 80, top: 10, bottom: 30 }}
         type={type}
-        seriesName="MSFT" // don't foget to change this
+        seriesName="MSFT"
         data={data}
         xScale={scaleTime()}
         xAccessor={xAccessor}

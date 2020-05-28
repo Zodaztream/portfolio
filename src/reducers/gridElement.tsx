@@ -13,13 +13,15 @@ interface innerElement {
   [key: string]: Element;
 }
 
-//export interfaces instead of copying it to all (separate types file, probably index.types or something for easier import): https://redux.js.org/recipes/usage-with-typescript
-
 const initialUserState: ElementState = {
   elements: {}
 };
 
-// default state is 0, next time this is called, the state is called from data storage instead.
+/**
+ *
+ * @description This redux reducer handles the grid elements, and manipulates the grid elements with the help
+ * of immutability-helper
+ */
 const gridReducer = (
   state: ElementState = initialUserState,
   action: ActionType

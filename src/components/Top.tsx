@@ -1,4 +1,8 @@
-import React, { CSSProperties, useState } from "react";
+/**
+ * Top component:
+ * This displays the top bar
+ */
+import React, { useState } from "react";
 import {
   useSelector as useReduxSelector,
   useDispatch,
@@ -167,6 +171,10 @@ const styleSheet_outside = {
   }
 };
 
+/**
+ * @description This functional component handles the Top Bar
+ * Like logging in, register (account modal), enter edit mode, searching etc.
+ */
 function Top() {
   const [showAccountModal, hideAccountModal] = useModal(() => (
     <AccountMenu onClose={hideAccountModal} />
@@ -198,7 +206,7 @@ function Top() {
                 dispatch(addElement(obj));
               });
               dispatch(updateBackground(background));
-            } else {
+            } else if (!response.success) {
               dispatch(setMessage(response.message, true));
             }
           }
@@ -233,11 +241,9 @@ function Top() {
         <div
           className={classes.toolBarEnabled}
           onClick={() => {
-            // maybe have a check here for if we're logged in (maybe "ping" the server, and have the server return "true" if logged in)
-            // if we're logged in, then don't show the below, just go back home, could do that by passing some element which resets Main.tsx
             handlePing().then(success => {
               if (success) {
-                //if we're logged in, also, one could perhaps send a websocket message instead, just ensure to have @auth.login_required ? we'll see
+                //if we're logged in
                 dispatch(setSearching(false));
               } else {
                 dispatch(toggleAccountMenu());
@@ -273,9 +279,14 @@ function Top() {
         <div
           className={classes.toolBarEnabled}
           onClick={() =>
-            handleLogout().then(() => {
-              dispatch(clearAllElements());
-              dispatch(updateBackground(""));
+            handleLogout().then(({ message, success }) => {
+              if (success) {
+                dispatch(clearAllElements());
+                dispatch(updateBackground(""));
+                dispatch(setMessage(message, false));
+              } else {
+                dispatch(setMessage(message, true));
+              }
             })
           }
         >

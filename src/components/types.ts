@@ -1,3 +1,7 @@
+/**
+ * This exports types that will be used across
+ * many (more than one ) files.
+ */
 export interface Element {
   i: string;
   x?: number;

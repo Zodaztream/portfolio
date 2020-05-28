@@ -17,7 +17,6 @@ import {
 import { removeElement, setMessage } from "../actions";
 import Chart from "./Chart";
 import { getData } from "./chartUtils";
-//https://medium.com/@vitalyb/dont-let-typescript-slow-you-down-92d394ec8c9f
 import { Theme, withStyles, createStyles } from "@material-ui/core/styles";
 import { DSVParsedArray } from "d3-dsv";
 import StockPicker from "./StockPicker";
@@ -53,12 +52,6 @@ interface IData {
   data: DSVParsedArray<any>;
 }
 
-/** LOOK INTO THIS TO FIX THE SLOW TRANSITION.
- *   classes: {
-    [toolBarItem: string]: ReactChild;
-  };
- */
-
 // Types for possible props
 interface IProps {
   classes: {
@@ -85,13 +78,12 @@ function Stockchart(props: IProps) {
   const dispatch = useDispatch();
   const isEdit = useSelector(state => state.edit);
 
-  // implement a function which perform "setChoose"
-  //
   const updateChoose = (value: boolean) => {
     setChoose(value);
   };
 
-  /** This function will retrieve the parsed response from the Network fetch to the API
+  /**
+   * @description This function will retrieve the parsed response from the Network fetch to the API
    * And if the data is valid, then the data for this stockchart will be applied.
    */
   const tryChart = (chart: string) => {

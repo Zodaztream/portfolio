@@ -2,7 +2,10 @@ interface editTypes {
   type: string;
 }
 
-// default state is 0, next time this is called, the state is called from data storage instead.
+/**
+ * @description This redux reducer handles the boolean for the edit variable
+ * which will toggle the edit state.
+ */
 const editReducer = (state: boolean = false, action: editTypes) => {
   switch (action.type) {
     case "TOGGLE_EDIT":

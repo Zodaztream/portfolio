@@ -3,7 +3,9 @@ interface searchTypes {
   payload: boolean;
 }
 
-// default state is 0, next time this is called, the state is called from data storage instead.
+/**
+ * @description This redux reducer handles the boolean search state.
+ */
 const searchReducer = (state: boolean = false, action: searchTypes) => {
   switch (action.type) {
     case "SET_SEARCHING":
