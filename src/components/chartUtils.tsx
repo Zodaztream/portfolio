@@ -42,12 +42,13 @@ interface DataStruct{
  * @returns the scrubbed data
  */
 function trimData(data: DataStruct) {
-  
+  console.log(data)
   var today = new Date();
   var result : DataStruct  = {}
   Object.keys(data).map((date: string) => {
     var rawDate = parseDateTime(date);
     // special case for weekend data (returns Friday's data)
+    // NASDAQ data from 
     if(today.getDate() == rawDate?.getDate() || [6, 0].includes(today.getDay()) ){
       result[date] = data[date];
     }
@@ -88,13 +89,17 @@ export function getData(tag: string) {
       if(data.includes("Thank you") ){
         return {success: false, type: "exhausted"} 
       }
-      // special case if the call was invalid, i.e invalid tag
+      // special case if the call was invalid, i.e invalid
       else if(data.includes("Invalid API call")){
         return {success: false, type: "error"}
       }
-
       var csv = convertJsonToCsv(data);
-      return csvParse(csv, parseData(parseDateTime));
+      var parsedCsv = csvParse(csv, parseData(parseDateTime));
+      // special case for empty data
+      if(parsedCsv.length <= 6){
+        return {success: false, type: "nodata"}
+      }
+      return parsedCsv;
     })
     .then(data => {
       if((data as DataExceeded).success !== undefined){

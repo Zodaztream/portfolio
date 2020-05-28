@@ -100,11 +100,19 @@ function Stockchart(props: IProps) {
           timer.current = window.setTimeout(() => {
             tryChart(chart);
           }, 60000);
-        } else {
+        } else if ((data as DataExceeded).type === "error") {
           setLoading(false);
           dispatch(
             setMessage(
               "Sorry, the TAG you asked for does not exist, please try another",
+              true
+            )
+          );
+        } else {
+          setLoading(false);
+          dispatch(
+            setMessage(
+              "Sorry, empty Data. If you are trying to access NASDAQ data, it sometimes return old data. Try another time.",
               true
             )
           );
