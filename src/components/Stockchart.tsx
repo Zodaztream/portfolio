@@ -3,7 +3,7 @@
  * Displays an intra day, continous, candle stick chart if stock-name is provided
  */
 
-import React, { useEffect, useState, ReactChild } from "react";
+import React, { useEffect, useState } from "react";
 //import { useSelector, useDispatch } from "react-redux";
 import ControlPoint from "@material-ui/icons/ControlPoint";
 import Clear from "@material-ui/icons/Clear";

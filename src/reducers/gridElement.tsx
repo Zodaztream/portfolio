@@ -1,6 +1,4 @@
-import { Reducer } from "redux";
 import { Element } from "../components/types";
-import { access } from "fs";
 import update from "immutability-helper";
 import { ElementState } from "../components/types";
 

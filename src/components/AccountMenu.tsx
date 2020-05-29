@@ -18,11 +18,8 @@ import {
   setMessage
 } from "../actions";
 import { makeStyles } from "@material-ui/core";
-import background from "../images/background.jpg";
-import { url } from "inspector";
 import { handleLogin, handleRegister, getProfile } from "./Network";
 import { green, red } from "@material-ui/core/colors";
-import Fab from "@material-ui/core/Fab";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import clsx from "clsx";
 import { DataArray, Element, ResponseType } from "./types";

@@ -8,7 +8,6 @@ import {
   useDispatch,
   TypedUseSelectorHook
 } from "react-redux";
-import { findByLabelText } from "@testing-library/dom";
 import SearchIcon from "@material-ui/icons/Search";
 import AccountBox from "@material-ui/icons/AccountBoxOutlined";
 import Close from "@material-ui/icons/CloseOutlined";
@@ -28,7 +27,6 @@ import {
   fade,
   createStyles
 } from "@material-ui/core/styles";
-import { Button } from "@material-ui/core";
 import { handleLogout, getProfile, handlePing } from "./Network";
 import { Element, DataArray, ResponseType } from "./types";
 import { addElement, setSearching, updateBackground } from "../actions";
@@ -195,7 +193,6 @@ function Top() {
       if (success) {
         dispatch(setSearching(true));
         dispatch(clearAllElements());
-        dispatch(setMessage(search + " does not exist in the database", true));
         getProfile(search).then((response: ResponseType | void) => {
           if (response) {
             if (response.data && response.success) {

@@ -47,7 +47,7 @@ function trimData(data: DataStruct) {
   Object.keys(data).map((date: string) => {
     var rawDate = parseDateTime(date);
     //We only show the most recent data, 1 day of data at most.
-    if(firstDate == rawDate?.getDate()){
+    if(firstDate === rawDate?.getDate()){
       result[date] = data[date];
     }
   });

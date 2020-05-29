@@ -26,7 +26,7 @@ import {
   setMessage
 } from "../actions";
 import { RootState } from "../reducers";
-import { Element, DataArray, ResponseType, DataExceeded } from "./types";
+import { Element, DataArray, ResponseType } from "./types";
 import BgSelector from "./BgSelector";
 import { useModal } from "react-modal-hook";
 import Dialog from "@material-ui/core/Dialog";

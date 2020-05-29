@@ -22,7 +22,7 @@ export const handleLogin = (username: string, password: string) => {
     .then(response => response.text())
     .then(responseData => {
       let parsed: ResponseType = JSON.parse(responseData);
-      const { message, success, data } = parsed;
+      const { success, data } = parsed;
       if (success) {
         localStorage.setItem("token", data);
       }
@@ -50,7 +50,7 @@ export const handleRegister = (username: string, password: string) => {
     .then(response => response.text())
     .then(responseData => {
       let parsed: ResponseType = JSON.parse(responseData);
-      const { message, success } = parsed;
+      const { success } = parsed;
       return success;
     });
   return PromiseRegister;
@@ -120,7 +120,7 @@ export const handleProfileUpdate = (
     .then(response => response.text())
     .then(responseData => {
       let parsed: ResponseType = JSON.parse(responseData);
-      const { message, success } = parsed;
+      const { data } = parsed;
       return data;
     })
     .catch(() => {});
@@ -181,7 +181,7 @@ export const handlePing = () => {
     .then(response => response.text())
     .then(responseData => {
       let parsed: ResponseType = JSON.parse(responseData);
-      const { message, success } = parsed;
+      const { success } = parsed;
 
       return success;
     })
@@ -214,7 +214,7 @@ export const handleSearch = (username: string) => {
     .then(response => response.text())
     .then(responseData => {
       let parsed: ResponseType = JSON.parse(responseData);
-      const { message, success, data } = parsed;
+      const { data } = parsed;
       return data;
     })
     .then(data => {

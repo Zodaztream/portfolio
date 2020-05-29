@@ -29,7 +29,7 @@ import { MouseCoordinateY } from "react-stockcharts/lib/coordinates";
 //@ts-ignore
 import { OHLCTooltip } from "react-stockcharts/lib/tooltip";
 //@ts-ignore
-import { fitWidth, fitDimensions } from "react-stockcharts/lib/helper";
+import { fitDimensions } from "react-stockcharts/lib/helper";
 //@ts-ignore
 import { last } from "react-stockcharts/lib/utils";
 import { DSVParsedArray } from "d3-dsv";
