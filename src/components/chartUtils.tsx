@@ -42,14 +42,12 @@ interface DataStruct{
  * @returns the scrubbed data
  */
 function trimData(data: DataStruct) {
-  console.log(data)
-  var today = new Date();
   var result : DataStruct  = {}
+  var firstDate = parseDateTime(Object.keys(data)[0])?.getDate();
   Object.keys(data).map((date: string) => {
     var rawDate = parseDateTime(date);
-    // special case for weekend data (returns Friday's data)
-    // NASDAQ data from 
-    if(today.getDate() == rawDate?.getDate() || [6, 0].includes(today.getDay()) ){
+    //We only show the most recent data, 1 day of data at most.
+    if(firstDate == rawDate?.getDate()){
       result[date] = data[date];
     }
   });

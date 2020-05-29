@@ -97,6 +97,7 @@ function Stockchart(props: IProps) {
               false
             )
           );
+          // perform another try
           timer.current = window.setTimeout(() => {
             tryChart(chart);
           }, 60000);
