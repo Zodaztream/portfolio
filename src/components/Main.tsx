@@ -149,6 +149,9 @@ function Main() {
           dispatch(updateBackground(background));
         } else if (!response.success) {
           dispatch(setMessage(response.message, true));
+        } else {
+          // No data (user hasn't saved a profile)
+          dispatch(updateBackground(""));
         }
       }
     });
