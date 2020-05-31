@@ -2,7 +2,7 @@
 
 **08/05/20 Progress report** : https://youtu.be/jHLrYLrzEbs
 
-**LINK TO DEPLOYED SITE** : https://reactportfoliotddd27.herokuapp.com/
+**2020/05/31 Final Project Video** : https://youtu.be/z7WFyN3a_d8
 
 Welcome to portfolio!
 
