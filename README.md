@@ -4,6 +4,8 @@
 
 **2020/05/31 Final Project Video** : https://youtu.be/z7WFyN3a_d8
 
+**2020/05/31 Final Code Video** : https://youtu.be/xSyxHjY4Z4o
+
 Welcome to portfolio!
 
 Customize and display up to 12 different stock charts on your profile. View other people's profiles to see what they are doing. Maximize your earnings with this easy-to-use, and free, website.

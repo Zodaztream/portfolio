@@ -139,7 +139,6 @@ function Main() {
   // Fetches the profile data from the server/DB and applies it.
   const showProfile = () => {
     getProfile("").then((response: ResponseType | void) => {
-      console.log(response);
       if (response) {
         if (response.data && response.success) {
           const { elements, background }: DataArray = JSON.parse(response.data);
@@ -170,7 +169,6 @@ function Main() {
     if (!isSearching) {
       dispatch(clearAllElements()); //empty the state
       firstRun.current = false;
-      console.log("Showing the profile");
       showProfile();
     }
   }, [isSearching]);

@@ -56,15 +56,15 @@ function trimData(data: DataStruct) {
 
 
 function convertJsonToCsv(data: string) {
-  var test = JSON.parse(data);
-  var testTime = test["Time Series (5min)"]; 
-  testTime = trimData(testTime);
-  var dates = Object.keys(testTime);
+  var parsed = JSON.parse(data);
+  var allTime = parsed["Time Series (5min)"]; 
+  allTime = trimData(allTime);
+  var dates = Object.keys(allTime);
   var headers: string[] = ["open", "high", "low", "close", "volume", "date"];
-  let csv = Object.keys(testTime).map(
+  let csv = Object.keys(allTime).map(
     date =>
-      Object.keys(testTime[date])
-        .map(innerKey => testTime[date][innerKey])
+      Object.keys(allTime[date])
+        .map(innerKey => allTime[date][innerKey])
         .join(",")
   );
   csv = csv.map((elem, i) => elem + "," + dates[i]);
