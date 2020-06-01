@@ -106,8 +106,8 @@ export const handleProfileUpdate = (
   const data = new URLSearchParams();
   data.append("data", JSON.stringify(dataBuilder));
 
-  // need to do error handling as well, but this "template" works!
-  /** { "elements":  [{"i": "_64.3", "x": 2, "y": 3, "w": 2, "h":7, "chart": ""},  {"i": "_69", "x": 2, "y": 3, "w":5, "h":3, "chart": "MSFT"}], "background": "image.jpg"}
+  /**
+   * { "elements":  [{"i": "_64.3", "x": 2, "y": 3, "w": 2, "h":7, "chart": ""},  {"i": "_69", "x": 2, "y": 3, "w":5, "h":3, "chart": "MSFT"}], "background": "image.jpg"}
    * should look like this!
    */
 
@@ -139,8 +139,8 @@ export const getProfile = (username: string) => {
 
   const data = new URLSearchParams();
   data.append("username", username);
-  // need to do error handling as well, but this "template" works!
-  /** { "elements":  [{"i": "_64.3", "x": 2, "y": 3, "w": 2, "h":7, "chart": ""},  {"i": "_69", "x": 2, "y": 3, "w":5, "h":3, "chart": "MSFT"}], "background": "image.jpg"}
+  /**
+   * { "elements":  [{"i": "_64.3", "x": 2, "y": 3, "w": 2, "h":7, "chart": ""},  {"i": "_69", "x": 2, "y": 3, "w":5, "h":3, "chart": "MSFT"}], "background": "image.jpg"}
    * should look like this!
    */
   const PromiseProfile = fetch(base_url + "read_profile", {
@@ -155,10 +155,6 @@ export const getProfile = (username: string) => {
       return parsed;
     })
     .catch(() => {});
-  //.then(data => {
-  //  //const { elements }: DataArray = JSON.parse(data);
-  //  return JSON.parse(data);
-  //})
 
   return PromiseProfile;
 };

@@ -187,10 +187,11 @@ function Top() {
     [classes.toolBarDisabled]: isSearching
   });
 
-  // this function happens what should happen when we search
+  // this function defines what should happen when we search
   const searchOnclick = () => {
     handlePing().then(success => {
       if (success) {
+        //If we're logged in
         dispatch(setSearching(true));
         dispatch(clearAllElements());
         getProfile(search).then((response: ResponseType | void) => {
@@ -209,6 +210,7 @@ function Top() {
           }
         });
       } else {
+        //If not logged in -> prompt to log in/register
         dispatch(toggleAccountMenu());
         showAccountModal();
       }

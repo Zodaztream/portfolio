@@ -4,7 +4,7 @@
 
 **2020/05/31 Final Project Video** : https://youtu.be/z7WFyN3a_d8
 
-**2020/05/31 Final Code Video** : https://youtu.be/xSyxHjY4Z4o
+**2020/06/01 Final Code Video** : https://youtu.be/8TAFeOwBHic
 
 Welcome to portfolio!
 
